@@ -8,7 +8,7 @@
       <class>xanketes.gestionbibliotecaspringboot.modelo.entidades.EntidadCategoria</class>
       <class>xanketes.gestionbibliotecaspringboot.modelo.entidades.EntidadHistorico</class>
       <class>xanketes.gestionbibliotecaspringboot.modelo.entidades.EntidadLibro</class>
-      <class>xanketes.gestionbibliotecaspringboot.modelo.entidades.EntidadPrestamos</class>
+      <class>xanketes.gestionbibliotecaspringboot.modelo.entidades.EntidadPrestamo</class>
       <class>xanketes.gestionbibliotecaspringboot.modelo.entidades.EntidadUsuario</class>
       <properties>
           <property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306"/>

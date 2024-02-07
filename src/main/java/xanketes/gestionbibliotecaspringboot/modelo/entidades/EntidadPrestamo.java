@@ -6,7 +6,7 @@ import java.sql.Timestamp;
 
 @Entity
 @Table(name = "prestamos", schema = "BIBLIOTECA", catalog = "")
-public class EntidadPrestamos {
+public class EntidadPrestamo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "idPrestamo", nullable = false)
@@ -42,7 +42,7 @@ public class EntidadPrestamos {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        EntidadPrestamos that = (EntidadPrestamos) o;
+        EntidadPrestamo that = (EntidadPrestamo) o;
 
         if (idPrestamo != that.idPrestamo) return false;
         if (fechaPrestamo != null ? !fechaPrestamo.equals(that.fechaPrestamo) : that.fechaPrestamo != null)
