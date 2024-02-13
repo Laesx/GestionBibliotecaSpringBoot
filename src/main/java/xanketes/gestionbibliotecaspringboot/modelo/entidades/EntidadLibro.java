@@ -3,7 +3,7 @@ package xanketes.gestionbibliotecaspringboot.modelo.entidades;
 import jakarta.persistence.*;
 
 @Entity
-        @Table(name = "libro", schema = "BIBLIOTECA", catalog = "")
+        @Table(name = "libro", schema = "BIBLIOTECA")
 public class EntidadLibro {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id

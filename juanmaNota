@@ -1,0 +1,3 @@
+Dificultad: Al generar consultas con el postman me aparecian problemas ya que me aparecian las referencias y en las consultas,
+por lo que me tuve que ir al controlador de libro e ir modificando el mapeo para añadir la ruta absoluta, es decir,
+en vez de "libros" que fuera /api-rest/libros" y ya me lo cogia bien
