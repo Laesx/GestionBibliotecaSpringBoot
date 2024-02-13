@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/usuarios")
+@RequestMapping("/api-rest/usuarios")
 public class ControladorUsuario {
     @Autowired
     IRepoUsuario repoUsuario;
@@ -28,7 +28,7 @@ public class ControladorUsuario {
     }
 
     //insertar usuarios POST
-    @PostMapping("/{id}")
+    @PostMapping
     public EntidadUsuario guardarUsuario(@Validated @RequestBody EntidadUsuario usuario) {
         return repoUsuario.save(usuario);
     }
