@@ -22,8 +22,9 @@ public class ControladorPrestamo {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<EntidadPrestamo> buscarPrestamoPorId(int id){
+    public ResponseEntity<EntidadPrestamo> buscarPrestamoPorId(@PathVariable(value = "id") int id){
         Optional<EntidadPrestamo> prestamo = repoPrestamo.findById(id);
+
         if (prestamo.isPresent())
             return ResponseEntity.ok().body(prestamo.get()); // HTTP 200 OK
         else return ResponseEntity.notFound().build(); // HTTP 404 Not Found
@@ -44,17 +45,18 @@ public class ControladorPrestamo {
         EntidadPrestamo savedPrestamo = repoPrestamo.save(prestamo);
         return ResponseEntity.ok(savedPrestamo);
     }
+//Corregido aqui tambien
+    @PutMapping
+    public ResponseEntity<?> actualizarPrestamo(@Validated @RequestBody EntidadPrestamo nuevoPrestamo){
+        Optional<EntidadPrestamo> prestamo = repoPrestamo.findById(nuevoPrestamo.getIdPrestamo());
 
-    @PutMapping("/{id}")
-    public ResponseEntity<?> actualizarPrestamo(@PathVariable(value = "id") int id,
-                                                 @Validated @RequestBody EntidadPrestamo prestamo){
-        Optional<EntidadPrestamo> prestamoOptional = repoPrestamo.findById(id);
-        if (prestamoOptional.isPresent()){
-            EntidadPrestamo prestamoActual = prestamoOptional.get();
-            prestamoActual.setFechaPrestamo(prestamo.getFechaPrestamo());
-            prestamoActual.setLibro(prestamo.getLibro());
-            prestamoActual.setUsuario(prestamo.getUsuario());
-            return ResponseEntity.ok().body(repoPrestamo.save(prestamoActual));
+        if (prestamo.isPresent()){
+            prestamo.get().setLibro(nuevoPrestamo.getLibro());
+            prestamo.get().setUsuario(nuevoPrestamo.getUsuario());
+            prestamo.get().setFechaPrestamo(nuevoPrestamo.getFechaPrestamo());
+            repoPrestamo.save(prestamo.get());
+
+            return ResponseEntity.ok().body(prestamo.get());
         } else return ResponseEntity.notFound().build();
     }
 }

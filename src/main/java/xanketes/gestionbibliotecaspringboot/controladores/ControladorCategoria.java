@@ -22,7 +22,7 @@ public class ControladorCategoria {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<EntidadCategoria> buscarCategoriaPorId(int id){
+    public ResponseEntity<EntidadCategoria> buscarCategoriaPorId(@PathVariable(value = "id") int id){
         Optional<EntidadCategoria> categoria = repoCategoria.findById(id);
         if (categoria.isPresent())
             return ResponseEntity.ok().body(categoria.get()); // HTTP 200 OK
@@ -31,7 +31,7 @@ public class ControladorCategoria {
 
     // TODO COMPROBAR SI TENDRIA QUE DEVOLVER OPTIONAL O NO EN CASO DE QUE NO EXISTA
     @GetMapping("/nombre/{nomCategoria}")
-    public ResponseEntity<EntidadCategoria> buscarCategoriaPorNombre(@PathVariable(value = "categoria") String nomCategoria){
+    public ResponseEntity<EntidadCategoria> buscarCategoriaPorNombre(@PathVariable(value = "nomCategoria") String nomCategoria){
         EntidadCategoria categoria = repoCategoria.findByCategoria(nomCategoria);
         if (categoria != null)
             return ResponseEntity.ok().body(categoria); // HTTP 200 OK
@@ -57,14 +57,15 @@ public class ControladorCategoria {
         return ResponseEntity.ok(savedCategoria);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<?> actualizarCategoria(@PathVariable(value = "id") int id,
-                                                 @Validated @RequestBody EntidadCategoria categoria){
-        Optional<EntidadCategoria> categoriaOptional = repoCategoria.findById(id);
-        if (categoriaOptional.isPresent()){
-            EntidadCategoria categoriaActual = categoriaOptional.get();
-            categoriaActual.setCategoria(categoria.getCategoria());
-            return ResponseEntity.ok().body(repoCategoria.save(categoriaActual));
+    //Corregido, he eliminado el parametro id del metodo, para que busque la categoria por la id de la nueva categoria, ya que
+    //queremos editar todo menos la id de esa categoria
+    @PutMapping
+    public ResponseEntity<?> actualizarCategoria(@Validated @RequestBody EntidadCategoria nuevacategoria){
+        Optional<EntidadCategoria> categoria = repoCategoria.findById(nuevacategoria.getId());
+
+        if (categoria.isPresent()){
+            categoria.get().setCategoria(nuevacategoria.getCategoria());
+            return ResponseEntity.ok().body(repoCategoria.save(categoria.get()));
         } else return ResponseEntity.notFound().build();
     }
 }
