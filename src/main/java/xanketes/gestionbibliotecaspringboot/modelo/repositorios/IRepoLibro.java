@@ -6,3 +6,4 @@ import xanketes.gestionbibliotecaspringboot.modelo.entidades.EntidadLibro;
 public interface IRepoLibro extends CrudRepository<EntidadLibro, Integer> {
 
 }
+

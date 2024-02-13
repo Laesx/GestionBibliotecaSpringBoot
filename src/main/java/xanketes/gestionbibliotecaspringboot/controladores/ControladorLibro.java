@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/libros")
+@RequestMapping("/api-rest/libros")
 public class ControladorLibro {
     @Autowired
     IRepoLibro repoLibro;
@@ -36,7 +36,7 @@ public class ControladorLibro {
 
  */
 
-    @PostMapping("/{id}")
+    @PostMapping
     public EntidadLibro guardarLibro(@Validated @RequestBody EntidadLibro libro){
         return repoLibro.save(libro);
     }
@@ -53,9 +53,9 @@ public class ControladorLibro {
         }
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<?> actualizarLibro(@RequestBody EntidadLibro nuevoLibro, @PathVariable(value = "id") int id) {
-        Optional<EntidadLibro> libro = repoLibro.findById(id);
+    @PutMapping
+    public ResponseEntity<?> actualizarLibro(@RequestBody EntidadLibro nuevoLibro) {
+        Optional<EntidadLibro> libro = repoLibro.findById(nuevoLibro.getId());
 
         if (libro.isPresent()) {
             libro.get().setNombre(nuevoLibro.getNombre());
@@ -68,4 +68,8 @@ public class ControladorLibro {
             return ResponseEntity.notFound().build();
         }
     }
+
+
+
+
 }
