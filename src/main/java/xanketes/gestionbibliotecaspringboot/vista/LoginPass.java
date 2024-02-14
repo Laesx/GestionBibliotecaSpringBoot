@@ -144,7 +144,7 @@ public class LoginPass extends JDialog implements ActionListener, WindowListener
         try{
             myConf.setPassword(String.valueOf(ePass.getPassword()));
             // Aqui inicializamos la conexión a la BD con HibernateJPA
-            HibernateUtilJPA.getEntityManager();
+            // HibernateUtilJPA.getEntityManager();
             bSalir=true;
         } catch (Exception e) {
             SwgAuxiliar.msgExcepcion(e);
