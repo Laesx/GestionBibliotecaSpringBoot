@@ -1,0 +1,5 @@
+Spring intenta adivinar los nombres de las tablas al hacer la llamada a la base de datos,
+por defecto cambia el CamelCase a barras bajas...
+por lo que tenemos que poner:
+spring.jpa.hibernate.naming.physical-strategy=org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+en el application.properties
