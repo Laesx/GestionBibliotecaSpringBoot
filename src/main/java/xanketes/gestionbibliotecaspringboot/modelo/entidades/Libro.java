@@ -1,26 +1,12 @@
 package xanketes.gestionbibliotecaspringboot.modelo.entidades;
 
-import jakarta.persistence.*;
 
-@Entity
-        @Table(name = "libro", schema = "BIBLIOTECA")
-public class EntidadLibro {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Id
-    @Column(name = "id", nullable = false)
+public class Libro {
     private int id;
-    @Basic
-    @Column(name = "nombre", nullable = true, length = -1)
     private String nombre;
-    @Basic
-    @Column(name = "autor", nullable = true, length = -1)
     private String autor;
-    @Basic
-    @Column(name = "editorial", nullable = true, length = -1)
     private String editorial;
-    @ManyToOne
-    @JoinColumn(name = "categoria", referencedColumnName = "id")
-    private EntidadCategoria categoria;
+    private Categoria categoria;
 
     public int getId() {
         return id;
@@ -59,7 +45,7 @@ public class EntidadLibro {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        EntidadLibro that = (EntidadLibro) o;
+        Libro that = (Libro) o;
 
         if (id != that.id) return false;
         if (nombre != null ? !nombre.equals(that.nombre) : that.nombre != null) return false;
@@ -78,11 +64,11 @@ public class EntidadLibro {
         return result;
     }
 
-    public EntidadCategoria getCategoria() {
+    public Categoria getCategoria() {
         return categoria;
     }
 
-    public void setCategoria(EntidadCategoria categoria) {
+    public void setCategoria(Categoria categoria) {
         this.categoria = categoria;
     }
 }

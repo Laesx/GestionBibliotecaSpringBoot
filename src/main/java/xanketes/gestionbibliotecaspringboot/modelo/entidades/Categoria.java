@@ -1,16 +1,7 @@
 package xanketes.gestionbibliotecaspringboot.modelo.entidades;
 
-import jakarta.persistence.*;
-
-@Entity
-@Table(name = "categoria", schema = "BIBLIOTECA")
-public class EntidadCategoria {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Id
-    @Column(name = "id", nullable = false)
+public class Categoria {
     private int id;
-    @Basic
-    @Column(name = "categoria", nullable = true, length = -1)
     private String categoria;
 
     public int getId() {
@@ -34,7 +25,7 @@ public class EntidadCategoria {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        EntidadCategoria that = (EntidadCategoria) o;
+        Categoria that = (Categoria) o;
 
         if (id != that.id) return false;
         if (categoria != null ? !categoria.equals(that.categoria) : that.categoria != null) return false;

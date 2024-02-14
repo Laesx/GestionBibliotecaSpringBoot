@@ -1,25 +1,12 @@
 package xanketes.gestionbibliotecaspringboot.modelo.entidades;
 
-import jakarta.persistence.*;
-
 import java.sql.Timestamp;
 
-@Entity
-@Table(name = "prestamos", schema = "BIBLIOTECA")
-public class EntidadPrestamo {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Id
-    @Column(name = "idPrestamo", nullable = false)
+public class Prestamo {
     private int idPrestamo;
-    @Basic
-    @Column(name = "fechaPrestamo", nullable = true)
     private Timestamp fechaPrestamo;
-    @ManyToOne
-    @JoinColumn(name = "idLibro", referencedColumnName = "id")
-    private EntidadLibro libro;
-    @ManyToOne
-    @JoinColumn(name = "idUsuario", referencedColumnName = "id")
-    private EntidadUsuario usuario;
+    private Libro libro;
+    private Usuario usuario;
 
     public int getIdPrestamo() {
         return idPrestamo;
@@ -42,7 +29,7 @@ public class EntidadPrestamo {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        EntidadPrestamo that = (EntidadPrestamo) o;
+        Prestamo that = (Prestamo) o;
 
         if (idPrestamo != that.idPrestamo) return false;
         if (fechaPrestamo != null ? !fechaPrestamo.equals(that.fechaPrestamo) : that.fechaPrestamo != null)
@@ -58,19 +45,19 @@ public class EntidadPrestamo {
         return result;
     }
 
-    public EntidadLibro getLibro() {
+    public Libro getLibro() {
         return libro;
     }
 
-    public void setLibro(EntidadLibro libro) {
+    public void setLibro(Libro libro) {
         this.libro = libro;
     }
 
-    public EntidadUsuario getUsuario() {
+    public Usuario getUsuario() {
         return usuario;
     }
 
-    public void setUsuario(EntidadUsuario usuario) {
+    public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
     }
 }

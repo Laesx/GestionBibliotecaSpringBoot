@@ -1,19 +1,8 @@
 package xanketes.gestionbibliotecaspringboot.modelo.entidades;
 
-import jakarta.persistence.*;
-
-@Entity
-@Table(name = "usuario", schema = "BIBLIOTECA")
-public class EntidadUsuario {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Id
-    @Column(name = "id", nullable = false)
+public class Usuario {
     private int id;
-    @Basic
-    @Column(name = "nombre", nullable = true, length = -1)
     private String nombre;
-    @Basic
-    @Column(name = "apellidos", nullable = true, length = -1)
     private String apellidos;
 
     public int getId() {
@@ -45,7 +34,7 @@ public class EntidadUsuario {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        EntidadUsuario that = (EntidadUsuario) o;
+        Usuario that = (Usuario) o;
 
         if (id != that.id) return false;
         if (nombre != null ? !nombre.equals(that.nombre) : that.nombre != null) return false;
