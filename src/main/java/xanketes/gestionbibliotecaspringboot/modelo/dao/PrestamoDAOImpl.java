@@ -30,9 +30,7 @@ public class PrestamoDAOImpl implements PrestamoDAO, Subject {
     }
     @Override
     public boolean insertar(Prestamo prestamo) throws Exception {
-        boolean insertado=false;
-
-
+        boolean insertado = SolicitudesHTTP.postRequest("http://localhost:8080/api-rest/prestamos",prestamo.toJSON());
         grabaEnLogIns(prestamo,sqlINSERT);
         notifyObservers();
         return insertado;
@@ -48,8 +46,7 @@ public class PrestamoDAOImpl implements PrestamoDAO, Subject {
 
     @Override
     public boolean modificar(Prestamo prestamo) throws Exception {
-        boolean actualizado = false;
-
+        boolean actualizado = SolicitudesHTTP.putRequest("http://localhost:8080/api-rest/prestamos/"+prestamo.getIdPrestamo(),prestamo.toJSON());
 
         grabaEnLogUpd(prestamo,sqlUPDATE);
         notifyObservers();
@@ -68,9 +65,7 @@ public class PrestamoDAOImpl implements PrestamoDAO, Subject {
 
     @Override
     public boolean borrar(int id) throws Exception {
-        boolean borrado=false;
-
-
+        boolean borrado=SolicitudesHTTP.deleteRequest("http://localhost:8080/api-rest/prestamos/"+id);
         grabaEnLog(id,sqlDELETE);
         notifyObservers();
         return borrado;
@@ -113,7 +108,14 @@ public class PrestamoDAOImpl implements PrestamoDAO, Subject {
      */
     @Override
     public Prestamo getPrestamo(int id) throws Exception {
-        return null;
+        JSONObject jsonObject = SolicitudesHTTP.getRequest("http://localhost:8080/api-rest/prestamos/"+id).getJSONObject(0);
+        JSONObject jsonLibro = jsonObject.getJSONObject("libro");
+        JSONObject jsonUsuario = jsonObject.getJSONObject("usuario");
+
+        return new Prestamo(jsonObject.getInt("idPrestamo"),
+                jsonLibro.getInt("id"),
+                jsonUsuario.getInt("id"),
+                LocalDateTime.parse(jsonObject.getString("fechaPrestamo"), DateTimeFormatter.ISO_OFFSET_DATE_TIME));
     }
 
 

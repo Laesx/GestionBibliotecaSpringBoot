@@ -1,5 +1,7 @@
 package xanketes.gestionbibliotecaspringboot.modelo.entidades;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import xanketes.gestionbibliotecaspringboot.modelo.Entidad;
 import xanketes.gestionbibliotecaspringboot.modelo.dao.helper.Entidades;
 import java.time.LocalDateTime;
@@ -9,6 +11,10 @@ public class Prestamo extends Entidad {
     private int idLibro;
     private int idUsuario;
     private LocalDateTime fechaPrestamo = LocalDateTime.now();
+
+    // Test de usar objetos, a ver si es mejor.
+    private Libro libro;
+    private Usuario usuario;
 
     public Prestamo(int idPrestamo, int idLibro, int idUsuario, LocalDateTime fechaPrestamo) {
         this.idPrestamo = idPrestamo;
@@ -86,6 +92,23 @@ public class Prestamo extends Entidad {
 
     public Usuario getObjUsuario(){
         return  Entidades.usuario(idUsuario);
+    }
+
+    public String toJSON() throws JSONException {
+        return toJSONObject().toString();
+    }
+
+    public JSONObject toJSONObject() throws JSONException {
+        libro = getObjLibro();
+        usuario = getObjUsuario();
+        return new JSONObject()
+                .put("idPrestamo", idPrestamo)
+                .put("libro", libro.toJSONObject())
+                .put("usuario", new JSONObject()
+                        .put("id", usuario.getId())
+                        .put("nombre", usuario.getNombre())
+                        .put("apellidos", usuario.getApellidos()))
+                .put("fechaPrestamo", fechaPrestamo.toString());
     }
 
     @Override
