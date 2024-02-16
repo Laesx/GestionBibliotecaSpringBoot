@@ -1,0 +1,6 @@
+Usuario conectado desde HIBERNATE: root a jdbc:mysql://localhost:6033/BIBLIOTECA (09:48:41)
+SELECT * FROM prestamos
+SELECT * FROM prestamos
+SELECT * FROM libro
+SELECT * FROM usuario
+SELECT * FROM categoria
