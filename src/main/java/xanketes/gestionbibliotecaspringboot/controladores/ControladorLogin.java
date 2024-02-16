@@ -53,7 +53,9 @@ public class ControladorLogin {
         */
 
         if (!loginRequest.getUsername().equals(USER) || !loginRequest.getPassword().equals(PASSWORD)){
-            Map<String, String> error = Collections.singletonMap("error", "Credenciales Incorrectas. Usuario no Autenticado.");
+            Map<String, String> error = new java.util.HashMap<>(Collections.singletonMap("error", "Failed Auth"));
+            error.put("message", "Credenciales Incorrectas. Usuario no Autenticado.");
+            error.put("status", "400");
             return ResponseEntity.badRequest().body(error);
         }
 
