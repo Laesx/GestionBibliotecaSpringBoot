@@ -8,8 +8,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import xanketes.gestionbibliotecaspringboot.modelo.entidades.EntidadLogin;
 
+import java.util.Collections;
+import java.util.Map;
+
 @RestController
 public class ControladorLogin {
+
+    private final static String USER = "root";
+    private final static String PASSWORD = "root";
 
     /*
     private final AuthenticationManager authenticationManager;
@@ -38,10 +44,19 @@ public class ControladorLogin {
         session.setAttribute("SPRING_SECURITY_CONTEXT", SecurityContextHolder.getContext());
          */
 
-        if (!loginRequest.getUsername().equals("root") || !loginRequest.getPassword().equals("root")){
+        /*
+        if (!loginRequest.getUsername().equals(USER) || !loginRequest.getPassword().equals(PASSWORD)){
             return ResponseEntity.badRequest().body("Credenciales Incorrectas. Usuario no Autenticado.");
         }
 
         return ResponseEntity.ok("Credenciales Correctas. Usuario Autenticado.");
+        */
+
+        if (!loginRequest.getUsername().equals(USER) || !loginRequest.getPassword().equals(PASSWORD)){
+            Map<String, String> error = Collections.singletonMap("error", "Credenciales Incorrectas. Usuario no Autenticado.");
+            return ResponseEntity.badRequest().body(error);
+        }
+
+        return ResponseEntity.ok(Collections.singletonMap("message", "Credenciales Correctas. Usuario Autenticado."));
     }
 }
