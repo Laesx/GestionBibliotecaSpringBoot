@@ -1,11 +1,16 @@
 package xanketes.gestionbibliotecaspringboot.modelo.dao;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import xanketes.gestionbibliotecaspringboot.modelo.dao.helper.LogFile;
+import xanketes.gestionbibliotecaspringboot.modelo.dao.helper.SolicitudesHTTP;
 import xanketes.gestionbibliotecaspringboot.modelo.entidades.Prestamo;
 import xanketes.gestionbibliotecaspringboot.observer.Observer;
 import xanketes.gestionbibliotecaspringboot.observer.Subject;
 
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -76,15 +81,28 @@ public class PrestamoDAOImpl implements PrestamoDAO, Subject {
     }
 
     /**
-     * Este método estático devuelve todos los prestamoss de la BD,
-     * este método tendremos en un futuro reimplmentarlo por rangos de x,
-     * para que el rendimiento no decaiga cuando la tabla crezca
+     * Este método devuelve todos los prestamos de la BD, a través de Springboot
      * @return un arraylist con todos los prestamos de la BD
-     * @throws Exception cualquier error asociado a la consulta sql, grabar en fichero...
+     * @throws Exception cualquier error asociado a la consulta http, grabar en fichero...
      */
     @Override
     public List<Prestamo> leerAllPrestamos() throws Exception {
-        return null;
+        List<Prestamo> prestamos= new ArrayList<>();
+        JSONArray jsonArray = SolicitudesHTTP.getRequest("http://localhost:8080/api-rest/prestamos");
+
+        for (int i = 0; i < jsonArray.length(); i++) {
+            JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+            JSONObject jsonLibro = jsonObject.getJSONObject("libro");
+            JSONObject jsonUsuario = jsonObject.getJSONObject("usuario");
+
+            prestamos.add(new Prestamo(jsonObject.getInt("idPrestamo"),
+                    jsonLibro.getInt("id"),
+                    jsonUsuario.getInt("id"),
+                    LocalDateTime.parse(jsonObject.getString("fechaPrestamo"), DateTimeFormatter.ISO_OFFSET_DATE_TIME)));
+        }
+
+        return prestamos;
     }
 
     /**

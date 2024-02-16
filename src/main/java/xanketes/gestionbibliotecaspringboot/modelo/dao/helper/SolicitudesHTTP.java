@@ -1,4 +1,4 @@
-package xanketes.gestionbibliotecaspringboot.modelo.dao;
+package xanketes.gestionbibliotecaspringboot.modelo.dao.helper;
 
 import org.json.JSONArray;
 import org.json.JSONObject;

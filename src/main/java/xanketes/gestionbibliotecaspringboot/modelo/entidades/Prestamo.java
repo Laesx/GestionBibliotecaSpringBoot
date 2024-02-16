@@ -1,12 +1,24 @@
 package xanketes.gestionbibliotecaspringboot.modelo.entidades;
 
-import java.sql.Timestamp;
+import xanketes.gestionbibliotecaspringboot.modelo.Entidad;
+import xanketes.gestionbibliotecaspringboot.modelo.dao.helper.Entidades;
+import java.time.LocalDateTime;
 
-public class Prestamo {
+public class Prestamo extends Entidad {
     private int idPrestamo;
-    private Timestamp fechaPrestamo;
-    private Libro libro;
-    private Usuario usuario;
+    private int idLibro;
+    private int idUsuario;
+    private LocalDateTime fechaPrestamo = LocalDateTime.now();
+
+    public Prestamo(int idPrestamo, int idLibro, int idUsuario, LocalDateTime fechaPrestamo) {
+        this.idPrestamo = idPrestamo;
+        this.idLibro = idLibro;
+        this.idUsuario = idUsuario;
+        this.fechaPrestamo = fechaPrestamo;
+    }
+
+    public Prestamo() {
+    }
 
     public int getIdPrestamo() {
         return idPrestamo;
@@ -16,11 +28,27 @@ public class Prestamo {
         this.idPrestamo = idPrestamo;
     }
 
-    public Timestamp getFechaPrestamo() {
+    public int getIdLibro() {
+        return idLibro;
+    }
+
+    public void setIdLibro(int idLibro) {
+        this.idLibro = idLibro;
+    }
+
+    public int getIdUsuario() {
+        return idUsuario;
+    }
+
+    public void setIdUsuario(int idUsuario) {
+        this.idUsuario = idUsuario;
+    }
+    //TODO revisar formateo de las fechas en los DAO
+    public LocalDateTime getFechaPrestamo() {
         return fechaPrestamo;
     }
 
-    public void setFechaPrestamo(Timestamp fechaPrestamo) {
+    public void setFechaPrestamo(LocalDateTime fechaPrestamo) {
         this.fechaPrestamo = fechaPrestamo;
     }
 
@@ -29,10 +57,10 @@ public class Prestamo {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Prestamo that = (Prestamo) o;
+        Prestamo prestamo = (Prestamo) o;
 
-        if (idPrestamo != that.idPrestamo) return false;
-        if (fechaPrestamo != null ? !fechaPrestamo.equals(that.fechaPrestamo) : that.fechaPrestamo != null)
+        if (idPrestamo != prestamo.idPrestamo) return false;
+        if (fechaPrestamo != null ? !fechaPrestamo.equals(prestamo.fechaPrestamo) : prestamo.fechaPrestamo != null)
             return false;
 
         return true;
@@ -45,19 +73,28 @@ public class Prestamo {
         return result;
     }
 
-    public Libro getLibro() {
-        return libro;
+    @Override
+    public int getId() {
+        return idPrestamo;
+    }
+    public String getFecha(){
+        return fechaPrestamo.toString();
+    }
+    public Libro getObjLibro(){
+        return Entidades.libro(idLibro);
     }
 
-    public void setLibro(Libro libro) {
-        this.libro = libro;
+    public Usuario getObjUsuario(){
+        return  Entidades.usuario(idUsuario);
     }
 
-    public Usuario getUsuario() {
-        return usuario;
-    }
-
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
+    @Override
+    public String toString() {
+        return "Prestamo{" +
+                "idPrestamo=" + idPrestamo +
+                ", idLibro=" + idLibro +
+                ", idUsuario=" + idUsuario +
+                ", fechaPrestamo=" + fechaPrestamo +
+                '}';
     }
 }

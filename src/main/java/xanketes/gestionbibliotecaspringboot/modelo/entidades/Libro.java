@@ -1,12 +1,11 @@
 package xanketes.gestionbibliotecaspringboot.modelo.entidades;
 
-
 public class Libro {
     private int id;
     private String nombre;
     private String autor;
     private String editorial;
-    private Categoria categoria;
+    private int categoria;
 
     public int getId() {
         return id;
@@ -45,12 +44,12 @@ public class Libro {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Libro that = (Libro) o;
+        Libro libro = (Libro) o;
 
-        if (id != that.id) return false;
-        if (nombre != null ? !nombre.equals(that.nombre) : that.nombre != null) return false;
-        if (autor != null ? !autor.equals(that.autor) : that.autor != null) return false;
-        if (editorial != null ? !editorial.equals(that.editorial) : that.editorial != null) return false;
+        if (id != libro.id) return false;
+        if (nombre != null ? !nombre.equals(libro.nombre) : libro.nombre != null) return false;
+        if (autor != null ? !autor.equals(libro.autor) : libro.autor != null) return false;
+        if (editorial != null ? !editorial.equals(libro.editorial) : libro.editorial != null) return false;
 
         return true;
     }
@@ -64,11 +63,19 @@ public class Libro {
         return result;
     }
 
-    public Categoria getCategoria() {
+    public int getCategoria() {
         return categoria;
     }
 
-    public void setCategoria(Categoria categoria) {
+
+
+    public void setCategoria(int categoria) {
         this.categoria = categoria;
     }
+
+    @Override
+    public String toString(){
+        return String.format("%d. %s %s",id,nombre,editorial);
+    }
 }
+
