@@ -8,11 +8,13 @@
         <version>3.2.2</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
+
     <groupId>xanketes</groupId>
     <artifactId>GestionBibliotecaSpringBoot</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.2</version>
     <name>GestionBibliotecaSpringBoot</name>
     <description>GestionBibliotecaSpringBoot</description>
+
     <properties>
         <java.version>17</java.version>
     </properties>
