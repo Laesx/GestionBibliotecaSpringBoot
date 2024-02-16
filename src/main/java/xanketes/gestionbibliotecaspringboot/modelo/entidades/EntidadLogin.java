@@ -1,5 +1,8 @@
 package xanketes.gestionbibliotecaspringboot.modelo.entidades;
 
+/**
+ * Pojo simple para hacer de modelo para la funcionalidad de login.
+ */
 public class EntidadLogin {
     private String username;
     private String password;
