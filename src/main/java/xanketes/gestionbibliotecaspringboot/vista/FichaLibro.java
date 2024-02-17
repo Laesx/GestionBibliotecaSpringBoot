@@ -1,5 +1,8 @@
 package xanketes.gestionbibliotecaspringboot.vista;
 
+import xanketes.gestionbibliotecaspringboot.modelo.Entidad;
+import xanketes.gestionbibliotecaspringboot.modelo.dao.CategoriaDAOImpl;
+import xanketes.gestionbibliotecaspringboot.modelo.dao.helper.Entidades;
 import xanketes.gestionbibliotecaspringboot.modelo.entidades.Categoria;
 import xanketes.gestionbibliotecaspringboot.modelo.entidades.Libro;
 import xanketes.gestionbibliotecaspringboot.presentador.PresentadorLibro;
@@ -146,7 +149,7 @@ public class FichaLibro extends JInternalFrame implements VistaLibro, ActionList
         cbCategoria.removeAllItems();
         if (categorias!=null){
             for (Categoria categoria:categorias) {
-                cbCategoria.addItem(categoria);
+                cbCategoria.addItem(categoria.getId());
             }
         }
     }
@@ -206,7 +209,8 @@ public class FichaLibro extends JInternalFrame implements VistaLibro, ActionList
             getLibro().setNombre(eTitulo.getText());
             getLibro().setAutor(eAutor.getText());
             getLibro().setEditorial(eEditorial.getText());
-            Categoria categoria=(Categoria) cbCategoria.getSelectedItem();
+            int idCategoria=(Integer) cbCategoria.getSelectedItem();
+            Categoria categoria =  Entidades.categoria(idCategoria);
             if (categoria!=null)
                 getLibro().setCategoria(categoria.getId());
             if (getLibro().getId()==0) {
