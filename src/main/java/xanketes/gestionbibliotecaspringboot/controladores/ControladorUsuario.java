@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import xanketes.gestionbibliotecaspringboot.modelo.entidades.EntidadLibro;
 import xanketes.gestionbibliotecaspringboot.modelo.entidades.EntidadUsuario;
 import xanketes.gestionbibliotecaspringboot.modelo.repositorios.IRepoUsuario;
 import java.util.List;
@@ -45,17 +46,23 @@ public class ControladorUsuario {
         }
     }
 
-    //modificar usuario a partir del id.
-    @PutMapping("/{id}")
-    public ResponseEntity<?> actualizarUsuario(@RequestBody EntidadUsuario modUsuario, @PathVariable(value="id") int id){
-        Optional<EntidadUsuario> usuario=repoUsuario.findById(id);
+    //modificar
+    @PutMapping
+    public ResponseEntity<?> actualizarUsuario(@RequestBody EntidadUsuario nuevoUsuario){
+        Optional<EntidadUsuario> usuario=repoUsuario.findById(nuevoUsuario.getId());
         if(usuario.isPresent()){
-            usuario.get().setNombre(modUsuario.getNombre());
-            usuario.get().setApellidos(modUsuario.getApellidos());
+            usuario.get().setNombre(nuevoUsuario.getNombre());
+            usuario.get().setApellidos(nuevoUsuario.getApellidos());
             repoUsuario.save(usuario.get());
             return ResponseEntity.ok().body("Usuario actualizado con exito");
         }else{
             return ResponseEntity.notFound().build();
         }
     }
+
+    @GetMapping("/busquedaOr")
+    public List<EntidadUsuario> findByNombreOrApellidos(@RequestParam int id, @RequestParam String nombre, @RequestParam String apellidos){
+        return repoUsuario.findByNombreOrApellidos(id,nombre, apellidos);
+    }
+
 }
