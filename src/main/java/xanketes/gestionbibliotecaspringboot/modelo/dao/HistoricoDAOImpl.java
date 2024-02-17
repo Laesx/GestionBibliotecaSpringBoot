@@ -1,28 +1,20 @@
 package xanketes.gestionbibliotecaspringboot.modelo.dao;
 
-import xanketes.gestionbibliotecaspringboot.modelo.dao.helper.LogFile;
 import xanketes.gestionbibliotecaspringboot.modelo.dao.helper.SolicitudesHTTP;
 import xanketes.gestionbibliotecaspringboot.modelo.entidades.Historico;
 import xanketes.gestionbibliotecaspringboot.observer.Observer;
 import xanketes.gestionbibliotecaspringboot.observer.Subject;
-import xanketes.gestionbibliotecaspringboot.singleton.Configuracion;
 
-import java.io.IOException;
-import java.sql.SQLException;
-import java.time.format.DateTimeFormatter;
-
-/**
- * Aquí implementaremos las reglas de negocio definidas
- * en la interfaz para trabajar con historico y
- * base de datos en MySQL
- * @author AGE
- * @version 2
- */
 public class HistoricoDAOImpl implements HistoricoDAO, Subject {
 
+    /** Este método inserta un historico en la BD, a través de Springboot
+     * @param historico objeto historico a insertar
+     * @return true si se ha insertado, false en caso contrario
+     * @throws Exception cualquier error asociado a la consulta http, grabar en fichero...
+     */
     @Override
     public boolean insertar(Historico historico) throws Exception {
-        boolean insertado = SolicitudesHTTP.postRequest(URl.HISTORICO+historico.toJSON());
+        boolean insertado = SolicitudesHTTP.postRequest(URL.HISTORICO, historico.toJSON());
         notifyObservers();
        return insertado;
     }
