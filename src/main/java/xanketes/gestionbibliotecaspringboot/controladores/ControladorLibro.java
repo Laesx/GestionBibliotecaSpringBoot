@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import xanketes.gestionbibliotecaspringboot.modelo.entidades.EntidadCategoria;
 import xanketes.gestionbibliotecaspringboot.modelo.entidades.EntidadLibro;
 import xanketes.gestionbibliotecaspringboot.modelo.repositorios.IRepoLibro;
 import java.util.List;
@@ -69,7 +70,17 @@ public class ControladorLibro {
         }
     }
 
+    /*
+    @GetMapping("/busquedaOr")
+    public List<EntidadLibro> findByAutorOrNombreOrEditorialOrId(@RequestParam String autor, @RequestParam String nombre, @RequestParam String editorial, @RequestParam int id) {
+        return repoLibro.findByAutorOrNombreOrEditorialOrId(autor, nombre, editorial, id);
+    }
 
+     */
 
+    @GetMapping("/busquedaOr")
+    public List<EntidadLibro> findByIdOrNombreOrAutorOrEditorialOrCategoria(@RequestParam String autor, @RequestParam String nombre, @RequestParam String editorial, @RequestParam int id, @RequestParam EntidadCategoria categoria) {
+        return repoLibro.findByIdOrNombreOrAutorOrEditorialOrCategoria(id, nombre, autor, editorial, categoria);
+    }
 
 }
