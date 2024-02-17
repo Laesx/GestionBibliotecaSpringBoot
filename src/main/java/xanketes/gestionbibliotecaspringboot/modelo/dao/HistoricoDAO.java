@@ -12,11 +12,7 @@ import java.sql.SQLException;
  * @version 2
  */
 public interface HistoricoDAO {
-    /**
-     * Método para obtener el objeto que contiene la parte de la información asociada al modelo.
-     * @return la instancía del objeto Historico (pojo)
-     */
-    Historico getHistorico();
+
     /**
      * Implementaremos las instrucciones necesarias para poder
      * insertar un registro asociado a la tabla historico para algún
@@ -25,7 +21,7 @@ public interface HistoricoDAO {
      * @throws SQLException
      * @throws IOException
      */
-    boolean insertar() throws Exception;
+    boolean insertar(Historico historico) throws Exception;
 
     /**
      * Implementaremos las instrucciones necesarias para poder
