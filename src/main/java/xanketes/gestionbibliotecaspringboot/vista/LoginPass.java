@@ -1,7 +1,7 @@
 package xanketes.gestionbibliotecaspringboot.vista;
 
 import xanketes.gestionbibliotecaspringboot.helper.LogIn;
-import xanketes.gestionbibliotecaspringboot.singleton.Configuracion;
+import xanketes.gestionbibliotecaspringboot.modelo.dao.URL;
 import xanketes.gestionbibliotecaspringboot.vista.helper.SwgAuxiliar;
 
 import javax.swing.*;
@@ -18,21 +18,14 @@ import java.awt.event.*;
 public class LoginPass extends JDialog implements ActionListener, WindowListener, KeyListener, FocusListener {
     private static final int WIDTH = 350;
     private static final int HEIGHT = 226;
-    private Configuracion myConf;{
-        try {
-            myConf=Configuracion.getInstance();
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this,e.getMessage());
-        }
-    }
     private JPanel pNorte;{
         pNorte=new JPanel(new GridLayout(2,0));
-        TitledBorder titledBorderDriverUrl = BorderFactory.createTitledBorder("Driver y URL:");
+        TitledBorder titledBorderDriverUrl = BorderFactory.createTitledBorder("URL y Endpoint:");
         pNorte.setBorder(titledBorderDriverUrl);
-        JLabel driver=new JLabel(myConf.getDriver());
-        JLabel url=new JLabel(myConf.getUrl());
-        pNorte.add(driver);
-        pNorte.add(url);
+        JLabel base_url=new JLabel(URL.BASE_URL);
+        JLabel endpoint=new JLabel(URL.ENDPOINT);
+        pNorte.add(base_url);
+        pNorte.add(endpoint);
     }
     private JPanel pOeste;{
         pOeste = new JPanel();
@@ -47,7 +40,7 @@ public class LoginPass extends JDialog implements ActionListener, WindowListener
         pUser.setBorder(titledBorderUser);
     }
     private JTextField eUser;{
-        eUser=new JTextField(myConf.getUser());
+        eUser=new JTextField();
         eUser.addFocusListener(this);
         eUser.setFont(new Font("Arial",Font.BOLD,16));
         eUser.addKeyListener(this);
@@ -141,9 +134,10 @@ public class LoginPass extends JDialog implements ActionListener, WindowListener
 
     private boolean conectar() {
         boolean bSalir=false;
-        myConf.setUser(eUser.getText());
+        //myConf.setUser(eUser.getText());
         try{
-            myConf.setPassword(String.valueOf(ePass.getPassword()));
+            //myConf.setPassword(String.valueOf(ePass.getPassword()));
+
             // Aqui llamamos a la funcion que comprueba si el usuario y la contraseña son correctos
             // Contra la api que hemos hecho con springboot
             LogIn.logIn(eUser.getText(),String.valueOf(ePass.getPassword()));

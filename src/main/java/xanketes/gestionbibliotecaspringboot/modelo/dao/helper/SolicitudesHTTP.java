@@ -122,7 +122,7 @@ public class SolicitudesHTTP {
         return insertado;
     }
 
-    // TODO Revisar esta función un poco, porque da más errores de los que soluciona
+    //TODO Revisar esta función un poco, porque da más errores de los que soluciona
     private static void postError(HttpURLConnection conn,String pUrl) throws Exception {
         Scanner scanner = new Scanner(conn.getErrorStream());
         String response = scanner.useDelimiter("\\Z").next();

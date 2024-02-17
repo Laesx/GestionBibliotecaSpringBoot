@@ -14,96 +14,90 @@ import java.util.List;
 
 /**
  * Aquí implementaremos las reglas definidas
- * en la interfaz para trabajar con usuario y
- * base de datos en MySQL
+ * en la interfaz para trabajar con las consultas de SpringBoot
  */
 public class UsuarioDAOImpl implements UsuarioDAO, Subject {
-    private static final String sqlINSERT = "INSERT INTO usuario (nombre,apellidos) VALUES (?,?)";
-    private static final String sqlUPDATE = "UPDATE usuario SET nombre = ?, apellidos = ? WHERE id = ?";
-    private static final String sqlDELETE = "DELETE usuario WHERE id = ?";
-
-    private static final String URL = "http://localhost:8080/api-rest/usuarios";
-
     public UsuarioDAOImpl() {
     }
 
+    /** Este método inserta un usuario en la BD, a través de Springboot
+     * @param usuario objeto usuario a insertar
+     * @return true si se ha insertado, false en caso contrario
+     * @throws Exception cualquier error asociado a la consulta http, grabar en fichero...
+     */
     @Override
     public boolean insertar(Usuario usuario) throws Exception {
-        boolean insertado = SolicitudesHTTP.postRequest(URL,usuario.toJSON());
-
-        grabaEnLogIns(usuario, sqlINSERT);
+        boolean insertado = SolicitudesHTTP.postRequest(URL.USUARIOS,usuario.toJSON());
         notifyObservers();
         return insertado;
     }
 
-    private void grabaEnLogIns(Usuario usuario, String sql) throws Exception {
-       /* sql = sql.replaceFirst("\\?", usuario.getNombre());
-        sql = sql.replaceFirst("\\?", usuario.getApellidos());*/
-        LogFile.saveLOG(sql);
-    }
-
+    /** Este método modifica un usuario en la BD, a través de Springboot
+     * @param usuario objeto usuario a modificar
+     * @return true si se ha modificado, false en caso contrario
+     * @throws Exception cualquier error asociado a la consulta http, grabar en fichero...
+     */
     @Override
     public boolean modificar(Usuario usuario) throws Exception {
-        boolean modificado = SolicitudesHTTP.putRequest(URL + "/" + usuario.getId(),usuario.toJSON());
-
-        grabaEnLogUpd(usuario, sqlUPDATE);
+        boolean modificado = SolicitudesHTTP.putRequest(URL.USUARIOS + "/" + usuario.getId(),usuario.toJSON());
         notifyObservers();
         return modificado;
     }
 
-    private void grabaEnLogUpd(Usuario usuario, String sql) throws Exception {
-       /* sql = sql.replaceFirst("\\?", usuario.getNombre());
-        sql = sql.replaceFirst("\\?", usuario.getApellidos());
-        sql = sql.replaceFirst("\\?", String.valueOf(usuario.getId()));*/
-        LogFile.saveLOG(sql);
-    }
-
-
+    /** Este método borra un usuario en la BD, a través de Springboot
+     * @param id clave primaria de la tabla usuarios
+     * @return true si se ha borrado, false en caso contrario
+     * @throws Exception cualquier error asociado a la consulta http, grabar en fichero...
+     */
     @Override
     public boolean borrar(int id) throws Exception {
-        boolean borrado = SolicitudesHTTP.deleteRequest(URL + "/" + id);
-        grabaEnLogDel(id, sqlDELETE);
+        boolean borrado = SolicitudesHTTP.deleteRequest(URL.USUARIOS + "/" + id);
         notifyObservers();
         return borrado;
     }
 
-    private void grabaEnLogDel(int id, String sql) throws Exception {
-        sql = sql.replaceFirst("\\?", String.valueOf(id));
-        LogFile.saveLOG(sql);
-    }
-
+    /** Este método devuelve todos los usuarios de la BD, a través de Springboot
+     * @return un arraylist con todos los usuarios de la BD
+     * @throws Exception cualquier error asociado a la consulta http, grabar en fichero...
+     */
     @Override
     public List<Usuario> leerAllUsuarios() throws Exception {
         List<Usuario> usuarios = new ArrayList<>();
-        JSONArray jsonArray = SolicitudesHTTP.getRequest(URL);
+        JSONArray jsonArray = SolicitudesHTTP.getRequest(URL.USUARIOS);
         for (int i = 0; i < jsonArray.length(); i++) {
             JSONObject jsonUsuario = jsonArray.getJSONObject(i);
             usuarios.add(new Usuario(jsonUsuario.getInt("id"), jsonUsuario.getString("nombre"), jsonUsuario.getString("apellidos")));
         }
-        LogFile.saveLOG("SELECT * FROM usuario");
         return usuarios;
     }
 
+    /** Este método devuelve una lista de usuarios de la BD, a través de Springboot
+     * @param id        búsqueda de usuario con dicho código de usuario
+     * @param nombre    búsqueda de usuarios con dicho nombre de usuario
+     * @param apellidos búsqueda de usuarios con dichos apellidos de usuario
+     * @return lista de usuarios que cumplen con los parámetros de búsqueda
+     * @throws Exception cualquier error asociado a la consulta http, grabar en fichero...
+     */
     @Override
     public List<Usuario> leerUsuariosOR(int id, String nombre, String apellidos) throws Exception {
-
         List<Usuario> lista = new ArrayList<>();
-        JSONArray jsonArray = SolicitudesHTTP.getRequest(URL + "/busquedaOr?id=" + id + "&nombre=" + nombre + "&apellidos=" + apellidos);
-
+        JSONArray jsonArray = SolicitudesHTTP.getRequest(URL.USUARIOS + "/busquedaOr?id=" + id + "&nombre=" + nombre + "&apellidos=" + apellidos);
         for (int i = 0; i < jsonArray.length(); i++) {
             JSONObject jsonUsuario = jsonArray.getJSONObject(i);
             lista.add(new Usuario(jsonUsuario.getInt("id"), jsonUsuario.getString("nombre"), jsonUsuario.getString("apellidos")));
         }
-
-
-        //LogFile.saveLOG(sql);
         return lista;
     }
 
 
+    /** Este método devuelve un usuario de la BD, a través de Springboot
+     * @param id clave primaria de la tabla usuario a buscar
+     * @return el objeto usuario asociado a una clave primaria
+     * @throws Exception cualquier error asociado a la consulta http, grabar en fichero...
+     */
     @Override
     public Usuario getUsuario(int id) throws Exception {
-        JSONObject jsonUsuario = SolicitudesHTTP.getRequestObject(URL + "/" + id);
+        JSONObject jsonUsuario = SolicitudesHTTP.getRequestObject(URL.USUARIOS + "/" + id);
         return new Usuario(
                 jsonUsuario.getInt("id"),
                 jsonUsuario.getString("nombre"),

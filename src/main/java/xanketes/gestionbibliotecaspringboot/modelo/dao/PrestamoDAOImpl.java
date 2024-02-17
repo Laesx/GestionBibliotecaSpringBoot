@@ -13,65 +13,44 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Aquí implementaremos las reglas de negocio definidas
- * en la interfaz para trabajar con préstamos y
- * base de datos en MySQL
- * @author AGE
- * @version 2
- */
 public class PrestamoDAOImpl implements PrestamoDAO, Subject {
-
-    private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-    private static final String sqlINSERT="INSERT INTO prestamos (idLibro,idUsuario,fechaPrestamo) VALUES (?,?,?)";
-    private static final String sqlUPDATE="UPDATE prestamos SET idLibro=?, idUsuario=?, fechaPrestamo=? WHERE idPrestamo = ?";
-    private static final String sqlDELETE="DELETE FROM prestamos WHERE idPrestamo = ?";
     public PrestamoDAOImpl() {
     }
+
+    /** Este método inserta un préstamo en la BD, a través de Springboot
+     * @param prestamo objeto prestamo a insertar
+     * @return true si se ha insertado, false en caso contrario
+     * @throws Exception cualquier error asociado a la consulta http, grabar en fichero...
+     */
     @Override
     public boolean insertar(Prestamo prestamo) throws Exception {
-        boolean insertado = SolicitudesHTTP.postRequest("http://localhost:8080/api-rest/prestamos",prestamo.toJSON());
-        grabaEnLogIns(prestamo,sqlINSERT);
+        boolean insertado = SolicitudesHTTP.postRequest(URL.PRESTAMOS,prestamo.toJSON());
         notifyObservers();
         return insertado;
     }
-    private void grabaEnLogIns(Prestamo prestamo, String sql) throws Exception {
-        /*
-        sql = sql.replaceFirst("\\?",String.valueOf(prestamo.getIdLibro()));
-        sql = sql.replaceFirst("\\?",String.valueOf(prestamo.getIdUsuario()));
-        sql = sql.replaceFirst("\\?", prestamo.getFechaPrestamo().format(formatter));
-         */
-        LogFile.saveLOG(sql);
-    }
 
+    /** Este método modifica un préstamo en la BD, a través de Springboot
+     * @param prestamo objeto prestamo a modificar
+     * @return true si se ha modificado, false en caso contrario
+     * @throws Exception cualquier error asociado a la consulta http, grabar en fichero...
+     */
     @Override
     public boolean modificar(Prestamo prestamo) throws Exception {
-        boolean actualizado = SolicitudesHTTP.putRequest("http://localhost:8080/api-rest/prestamos",prestamo.toJSON());
-
-        grabaEnLogUpd(prestamo,sqlUPDATE);
+        boolean actualizado = SolicitudesHTTP.putRequest(URL.PRESTAMOS,prestamo.toJSON());
         notifyObservers();
         return actualizado;
     }
-    private void grabaEnLogUpd(Prestamo prestamo, String sql) throws Exception {
-        /*
-        sql = sql.replaceFirst("\\?",String.valueOf(prestamo.getIdLibro()));
-        sql = sql.replaceFirst("\\?",String.valueOf(prestamo.getIdUsuario()));
-        sql = sql.replaceFirst("\\?", prestamo.getFechaPrestamo().format(formatter));
-        sql = sql.replaceFirst("\\?",String.valueOf(prestamo.getIdPrestamo()));
-         */
-        LogFile.saveLOG(sql);
-    }
 
+    /** Este método borra un préstamo en la BD, a través de Springboot
+     * @param id clave primaria de la tabla préstamos
+     * @return true si se ha borrado, false en caso contrario
+     * @throws Exception cualquier error asociado a la consulta http, grabar en fichero...
+     */
     @Override
     public boolean borrar(int id) throws Exception {
-        boolean borrado=SolicitudesHTTP.deleteRequest("http://localhost:8080/api-rest/prestamos/"+id);
-        grabaEnLog(id,sqlDELETE);
+        boolean borrado=SolicitudesHTTP.deleteRequest(URL.PRESTAMOS + "/" + id);
         notifyObservers();
         return borrado;
-    }
-    private void grabaEnLog(int id,String sql) throws Exception {
-        sql = sql.replaceFirst("\\?",String.valueOf(id));
-        LogFile.saveLOG(sql);
     }
 
     /**
@@ -82,7 +61,7 @@ public class PrestamoDAOImpl implements PrestamoDAO, Subject {
     @Override
     public List<Prestamo> leerAllPrestamos() throws Exception {
         List<Prestamo> prestamos= new ArrayList<>();
-        JSONArray jsonArray = SolicitudesHTTP.getRequest("http://localhost:8080/api-rest/prestamos");
+        JSONArray jsonArray = SolicitudesHTTP.getRequest(URL.PRESTAMOS);
 
         for (int i = 0; i < jsonArray.length(); i++) {
             JSONObject jsonObject = jsonArray.getJSONObject(i);
@@ -99,15 +78,15 @@ public class PrestamoDAOImpl implements PrestamoDAO, Subject {
         return prestamos;
     }
 
-    /**
-     * Para instanciar un objeto préstamos a partir de un id
+
+    /** Este método devuelve todos los préstamos de un usuario de la BD, a través de Springboot
      * @param id clave primaria de la tabla préstamos
-     * @return el objeto prestamos asociado a una clave primaria
-     * @throws Exception cualquier error asociado a la consulta sql, grabar en fichero, ...
+     * @return el objeto préstamo asociado a una clave primaria
+     * @throws Exception cualquier error asociado a la consulta http, grabar en fichero...
      */
     @Override
     public Prestamo getPrestamo(int id) throws Exception {
-        JSONObject jsonObject = SolicitudesHTTP.getRequestObject("http://localhost:8080/api-rest/prestamos/"+id);
+        JSONObject jsonObject = SolicitudesHTTP.getRequestObject(URL.PRESTAMOS + "/" + id);
         JSONObject jsonLibro = jsonObject.getJSONObject("libro");
         JSONObject jsonUsuario = jsonObject.getJSONObject("usuario");
 

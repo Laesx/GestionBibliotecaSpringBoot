@@ -13,118 +13,78 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Aquí implementaremos las reglas de negocio definidas
- * en la interfaz para trabajar con categorías y
- * base de datos en MySQL
- *
- * @author AGE
- * @version 2
- */
 public class CategoriaDAOImpl implements CategoriaDAO, Subject {
-    private static final String sqlINSERT = "INSERT INTO categoria (categoria) VALUES (?)";
-    private static final String sqlUPDATE = "UPDATE categoria SET categoria=? WHERE id=?";
-
-    private static final String sqlDELETE = "DELETE FROM categoria WHERE id=?";
-
     public CategoriaDAOImpl() {
     }
 
+    /** Este método inserta una categoría en la BD, a través de Springboot
+     * @param categoria objeto de la clase Categoria
+     * @return true si la categoría se ha insertado correctamente
+     * @throws Exception cualquier error asociado a la consulta http, grabar en fichero...
+     */
     @Override
     public boolean inserta(Categoria categoria) throws Exception {
-        boolean insertado = SolicitudesHTTP.postRequest("http://localhost:8080/api-rest/categorias", categoria.toJSON());
-
-        LogFile.saveLOG(sqlINSERT.replace("?", categoria.getCategoria()));
+        boolean insertado = SolicitudesHTTP.postRequest(URL.CATEGORIAS, categoria.toJSON());
         notifyObservers();
         return insertado;
     }
 
+    /** Este método modifica una categoría en la BD, a través de Springboot
+     * @param categoria objeto de la clase Categoria
+     * @return true si la categoría se ha modificado correctamente
+     * @throws Exception cualquier error asociado a la consulta http, grabar en fichero...
+     */
     @Override
     public boolean modificar(Categoria categoria) throws Exception {
-        boolean modificado = SolicitudesHTTP.putRequest("http://localhost:8080/api-rest/categorias",categoria.toJSON());
-
-        grabaEnLogUpd(categoria, sqlUPDATE);
+        boolean modificado = SolicitudesHTTP.putRequest(URL.CATEGORIAS,categoria.toJSON());
         notifyObservers();
         return modificado;
     }
 
+    /** Este método devuelve una categoría de la BD, a través de Springboot
+     * @param id clave primaria de la tabla categorías
+     * @return el objeto categoría asociado a una clave primaria
+     * @throws Exception cualquier error asociado a la consulta http, grabar en fichero...
+     */
     public Categoria getCategoriaById(int id) throws Exception {
-     JSONObject jsonCategoria=SolicitudesHTTP.getRequestObject("http://localhost:8080/api-rest/categorias/"+id);
+     JSONObject jsonCategoria=SolicitudesHTTP.getRequestObject(URL.CATEGORIAS + "/"+id);
      return new Categoria(jsonCategoria.getInt("id"),jsonCategoria.getString("categoria"));
     }
 
 
-    private void grabaEnLogUpd(Categoria categoria, String sql) throws Exception {
-        sql = sql.replaceFirst("\\?", categoria.getCategoria());
-        sql = sql.replaceFirst("\\?", String.valueOf(categoria.getId()));
-        LogFile.saveLOG(sql);
-    }
-
-
+    /** Este método devuelve todas las categorías de la BD, a través de Springboot
+     * @param id clave primaria de la tabla categorías
+     * @return true si la categoría se ha borrado correctamente
+     * @throws Exception cualquier error asociado a la consulta http, grabar en fichero...
+     */
     @Override
     public boolean borrar(int id) throws Exception {
-        boolean borrado = SolicitudesHTTP.deleteRequest("http://localhost:8080/api-rest/categorias/"+id);
-
-        grabaEnLogDel(id, sqlDELETE);
+        boolean borrado = SolicitudesHTTP.deleteRequest(URL.CATEGORIAS + "/"+id);
         notifyObservers();
         return borrado;
     }
 
-    private void grabaEnLogDel(int id, String sql) throws Exception {
-        sql = sql.replaceFirst("\\?", String.valueOf(id));
-        LogFile.saveLOG(sql);
-    }
 
-    /**
-     * el valor máximo del campo id de la tabla categorías
-     *
-     * @return valor máximo del campo id
-     * @throws Exception cualquier error asociado a la consulta sql
-     */
-    public static int maximaId() throws Exception {
-        int maximo = 0;
 
-        return maximo;
-    }
-
-    /**
-     * el valor mínimo del campo id de la tabla categorías
-     *
-     * @return valor mínimo del campo id
-     * @throws Exception cualquier error asociado a la consulta sql
-     */
-    public static int minimaId() throws Exception {
-        int minimo = 0;
-
-        return minimo;
-    }
-
-    /**
-     * para instanciar un objeto categoria a partir de un id
-     *
-     * @param id clave primaria de la tabla categoria
+    /** Este método devuelve una categoría de la BD, a través de Springboot
+     * @param id clave primaria de la tabla categorías
      * @return el objeto categoría asociado a una clave primaria
-     * @throws Exception cualquier error asociado a la consulta sql
+     * @throws Exception cualquier error asociado a la consulta http, grabar en fichero...
      */
     @Override
     public Categoria categoria(int id) throws Exception {
-        JSONObject jsonCategoria= SolicitudesHTTP.getRequestObject("http://localhost:8080/api-rest/categorias/"+id);
+        JSONObject jsonCategoria= SolicitudesHTTP.getRequestObject(URL.CATEGORIAS + "/" + id);
         return new Categoria(jsonCategoria.getInt("id"), jsonCategoria.getString("categoria"));
     }
 
 
-    /**
-     * Este método estático devuelve todos las categorías de la BD,
-     * este método tendremos en un futuro reimplmentarlo por rangos de x,
-     * para que el rendimiento no decaiga cuando la tabla crezca
-     *
-     * @return un arraylist con todos las categorias de la BD
-     * @throws SQLException        cualquier error asociado a la consulta sql
-     * @throws CampoVacioExcepcion en el caso que contenga una categoria con categoria a null
+    /** Este método devuelve todas las categorías de la BD, a través de Springboot
+     * @return una lista con todas las categorías de la BD
+     * @throws Exception cualquier error asociado a la consulta http, grabar en fichero...
      */
     public List<Categoria> leerAllCategorias() throws Exception {
        List<Categoria> categorias=new ArrayList<>();
-        JSONArray jsonArray= SolicitudesHTTP.getRequest("http://localhost:8080/api-rest/categorias");
+        JSONArray jsonArray= SolicitudesHTTP.getRequest(URL.CATEGORIAS);
         for (int i = 0; i <jsonArray.length() ; i++) {
             JSONObject jsonCategoria= jsonArray.getJSONObject(i);
             categorias.add(new Categoria(jsonCategoria.getInt("id"),jsonCategoria.getString("categoria")));
