@@ -7,4 +7,5 @@ import xanketes.gestionbibliotecaspringboot.modelo.entidades.EntidadCategoria;
 @Repository
 public interface IRepoCategoria extends CrudRepository<EntidadCategoria, Integer>{
     EntidadCategoria findByCategoria(String nomCategoria);
+    boolean existsById(Integer id);
 }

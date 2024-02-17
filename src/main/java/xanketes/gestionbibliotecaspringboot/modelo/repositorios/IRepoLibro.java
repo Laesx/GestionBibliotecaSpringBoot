@@ -12,5 +12,7 @@ public interface IRepoLibro extends CrudRepository<EntidadLibro, Integer> {
 
     //List<EntidadLibro> findByAutorOrNombreOrEditorialOrId(String autor, String nombre, String editorial, int id);
     List<EntidadLibro> findByIdOrNombreOrAutorOrEditorialOrCategoria(int id, String nombre, String autor, String editorial, EntidadCategoria categoria);
+
+    List<EntidadLibro> findByIdOrNombreOrAutorOrEditorial(int id, String nombre, String autor, String editorial);
 }
 
