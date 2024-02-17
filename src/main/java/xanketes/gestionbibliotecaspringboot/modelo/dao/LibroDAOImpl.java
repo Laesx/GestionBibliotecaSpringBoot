@@ -89,8 +89,10 @@ public class LibroDAOImpl implements LibroDAO, Subject {
     public List<Libro> leerLibrosOR(int id, String nombre, String autor, String editorial, int categoria) throws Exception {
         String sql="SELECT l FROM Libro l";
         String where="";
-        List<Libro> lista = null;
+        List<Libro> lista = new ArrayList<>();
         //EntityManager em = HibernateUtilJPA.getEntityManager();
+
+        //SolicitudesHTTP.getRequest("http://localhost:8080/api-rest/libros/nombre/" +  nombre,prestamo.toJSON());
 
         String wId="";
         if (id != 0) {
@@ -157,8 +159,15 @@ public class LibroDAOImpl implements LibroDAO, Subject {
      */
     @Override
     public Libro getLibro(int id) throws Exception {
-        JSONObject jsonLibro= SolicitudesHTTP.getRequest("http://localhost:8080/api-rest/usuarios/"+id).getJSONObject(0);
-        return new Libro(jsonLibro.getInt("id"),jsonLibro.getString("nombre"),jsonLibro.getString("autor"),jsonLibro.getString("editorial"),jsonLibro.getInt("categoria"));
+        JSONObject jsonLibro= SolicitudesHTTP.getRequestObject("http://localhost:8080/api-rest/libros/"+id);
+        JSONObject jsonCategoria=jsonLibro.getJSONObject("categoria");
+
+        return new Libro(
+                jsonLibro.getInt("id"),
+                jsonLibro.getString("nombre"),
+                jsonLibro.getString("autor"),
+                jsonLibro.getString("editorial"),
+                jsonCategoria.getInt("id"));
     }
 
     private Observer observer;

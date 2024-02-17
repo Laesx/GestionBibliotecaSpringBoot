@@ -267,10 +267,9 @@ public class FichaPrestamo extends JInternalFrame implements VistaPrestamo, Acti
     }
 
     private void actualizaformulario() {
-        Libro libro= prestamo.getObjLibro();
+        Libro libro = prestamo.getObjLibro();
         if (libro!=null)
             eLibro.setText(libro.toString());
-
         Usuario usuario = prestamo.getObjUsuario();
         if (usuario!=null)
             eUsuario.setText(usuario.toString());

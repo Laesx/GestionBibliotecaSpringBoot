@@ -54,10 +54,7 @@ public class Categoria extends Entidad{
 
     @Override
     public String toString() {
-        return "Categoria{" +
-                "id=" + id +
-                ", categoria='" + categoria + '\'' +
-                '}';
+        return String.format("%d. %s",id,categoria);
     }
 
     public String toJSON() throws JSONException {

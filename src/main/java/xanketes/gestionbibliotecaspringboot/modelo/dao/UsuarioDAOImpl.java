@@ -131,8 +131,12 @@ public class UsuarioDAOImpl implements UsuarioDAO, Subject {
 
     @Override
     public Usuario getUsuario(int id) throws Exception {
-        JSONObject jsonUsuario = SolicitudesHTTP.getRequest("http://localhost:8080/api-rest/usuarios/"+id).getJSONObject(0);
-        return new Usuario(jsonUsuario.getInt("id"),jsonUsuario.getString("nombre"),jsonUsuario.getString("apellidos"));
+        JSONObject jsonUsuario = SolicitudesHTTP.getRequestObject("http://localhost:8080/api-rest/usuarios/" + id);
+        return new Usuario(
+                jsonUsuario.getInt("id"),
+                jsonUsuario.getString("nombre"),
+                jsonUsuario.getString("apellidos")
+        );
     }
 
 

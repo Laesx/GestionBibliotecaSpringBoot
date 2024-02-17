@@ -90,17 +90,6 @@ public class Libro extends Entidad {
         this.categoria = categoria;
     }
 
-    //@Override
-    /*public String toString() {
-        return "Libro{" +
-                "id=" + id +
-                "nombre=" + nombre +
-                ", autor=" + autor +
-                ", editorial=" + editorial +
-                ", categoria="+ categoria +
-                '}';
-    }*/
-
     @Override
     public String toString(){
         return String.format("%d. %s %s",id,nombre,editorial);

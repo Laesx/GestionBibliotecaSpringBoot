@@ -5,7 +5,6 @@ import org.json.JSONObject;
 import xanketes.gestionbibliotecaspringboot.modelo.Entidad;
 
 public class Usuario extends Entidad {
-
     private int id;
     private String nombre;
     private String apellidos;
@@ -66,13 +65,8 @@ public class Usuario extends Entidad {
     }
 
     @Override
-    public String
-    toString() {
-        return "Usuario{" +
-                "id=" + id +
-                ", nombre='" + nombre + '\'' +
-                ", apellidos='" + apellidos + '\'' +
-                '}';
+    public String toString(){
+        return String.format("%d. %s %s",id,nombre,apellidos);
     }
 
     public String toJSON() throws JSONException {
