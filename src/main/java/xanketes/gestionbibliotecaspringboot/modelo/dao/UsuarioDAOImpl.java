@@ -87,45 +87,16 @@ public class UsuarioDAOImpl implements UsuarioDAO, Subject {
     @Override
     public List<Usuario> leerUsuariosOR(int id, String nombre, String apellidos) throws Exception {
 
-        String sql = "SELECT u FROM Usuario u";
-        String where = "";
-        List<Usuario> lista = null;
+        List<Usuario> lista = new ArrayList<>();
+        JSONArray jsonArray = SolicitudesHTTP.getRequest(URL + "/busquedaOr?id=" + id + "&nombre=" + nombre + "&apellidos=" + apellidos);
 
-        String wId = "";
-        if (id != 0) {
-            wId = "u.id = :idUsuario";
-            where = Sql.rellenaWhereOR(where, wId);
-        }
-        String wNombre = "";
-        if (!nombre.trim().isEmpty()) {
-            wNombre = "u.nombre LIKE :nombreUsuario";
-            where = Sql.rellenaWhereOR(where, wNombre);
-        }
-        String wApellidos = "";
-        if (!apellidos.trim().isEmpty()) {
-            wApellidos = "u.apellidos LIKE :apellidoUsuario";
-            where = Sql.rellenaWhereOR(where, wApellidos);
+        for (int i = 0; i < jsonArray.length(); i++) {
+            JSONObject jsonUsuario = jsonArray.getJSONObject(i);
+            lista.add(new Usuario(jsonUsuario.getInt("id"), jsonUsuario.getString("nombre"), jsonUsuario.getString("apellidos")));
         }
 
-        if (where.isEmpty())
-            return leerAllUsuarios();
-        else {
-            sql = sql + " WHERE " + where;
-            /*
-            TypedQuery<Usuario> typedQuery = em.createQuery(sql, Usuario.class);
 
-            if (!wId.isEmpty())
-                typedQuery.setParameter("idUsuario", id);
-            if (!wNombre.isEmpty())
-                typedQuery.setParameter("nombreUsuario", nombre);
-            if (!wApellidos.isEmpty())
-                typedQuery.setParameter("apellidoUsuario", apellidos);
-
-            lista = typedQuery.getResultList();
-
-             */
-        }
-        LogFile.saveLOG(sql);
+        //LogFile.saveLOG(sql);
         return lista;
     }
 

@@ -24,12 +24,13 @@ public class LibroDAOImpl implements LibroDAO, Subject {
     private static final String sqlINSERT="INSERT INTO libro (nombre,autor,editorial,categoria) VALUES (?,?,?,?)";
     private static final String sqlUPDATE="UPDATE libro SET nombre=?, autor=?, editorial=?, categoria=? WHERE id = ?";
     private static final String sqlDELETE="DELETE FROM libro WHERE id = ?";
+    private static final String URL = "http://localhost:8080/api-rest/libros";
     public LibroDAOImpl() {
     }
 
     @Override
     public boolean insertar(Libro libro) throws Exception {
-        boolean insertado = SolicitudesHTTP.postRequest("http://localhost:8080/api-rest/libros",libro.toJSON());
+        boolean insertado = SolicitudesHTTP.postRequest(URL,libro.toJSON());
 
         notifyObservers();
         grabaEnLogIns(libro,sqlINSERT);
@@ -46,7 +47,7 @@ public class LibroDAOImpl implements LibroDAO, Subject {
 
     @Override
     public boolean modificar(Libro libro) throws Exception {
-        boolean actualizado = SolicitudesHTTP.putRequest("http://localhost:8080/api-rest/libros",libro.toJSON());
+        boolean actualizado = SolicitudesHTTP.putRequest(URL,libro.toJSON());
 
         notifyObservers();
         grabaEnLogUpd(libro,sqlUPDATE);
@@ -66,7 +67,7 @@ public class LibroDAOImpl implements LibroDAO, Subject {
     }
     @Override
     public boolean borrar(int id) throws Exception {
-        boolean borrado = SolicitudesHTTP.deleteRequest("http://localhost:8080/api-rest/libros/"+id);
+        boolean borrado = SolicitudesHTTP.deleteRequest(URL + "/" + id);
         grabaEnLogDel(id,sqlDELETE);
         notifyObservers();
         return borrado;
@@ -75,7 +76,7 @@ public class LibroDAOImpl implements LibroDAO, Subject {
     @Override
     public List<Libro> leerAllLibros() throws Exception {
         List<Libro> libros=new ArrayList<>();
-        JSONArray jsonArray= SolicitudesHTTP.getRequest("http://localhost:8080/api-rest/libros");
+        JSONArray jsonArray= SolicitudesHTTP.getRequest(URL);
         for (int i = 0; i <jsonArray.length() ; i++) {
             JSONObject jsonLibro=jsonArray.getJSONObject(i);
             JSONObject jsonCategoria=jsonLibro.getJSONObject("categoria");
@@ -87,65 +88,22 @@ public class LibroDAOImpl implements LibroDAO, Subject {
 
     @Override
     public List<Libro> leerLibrosOR(int id, String nombre, String autor, String editorial, int categoria) throws Exception {
-        String sql="SELECT l FROM Libro l";
-        String where="";
+
+        JSONArray jsonArray= SolicitudesHTTP.getRequest(URL + "/busquedaOr" +
+                "?id=" + id +
+                "&nombre=" + nombre +
+                "&autor=" + autor +
+                "&editorial=" + editorial +
+                "&categoria=" + categoria);
         List<Libro> lista = new ArrayList<>();
-        //EntityManager em = HibernateUtilJPA.getEntityManager();
 
-        //SolicitudesHTTP.getRequest("http://localhost:8080/api-rest/libros/nombre/" +  nombre,prestamo.toJSON());
-
-        String wId="";
-        if (id != 0) {
-            wId = "l.id = :idLibro";
-            where = Sql.rellenaWhereOR(where, wId);
-        }
-        String wNombre="";
-        if (!nombre.trim().isEmpty()) {
-            wNombre = "l.nombre LIKE :nombreLibro";
-            where = Sql.rellenaWhereOR(where, wNombre);
-        }
-        String wAutor="";
-        if (!autor.trim().isEmpty()) {
-            wAutor = "l.autor LIKE :autorLibro";
-            where = Sql.rellenaWhereOR(where, wAutor);
+        for (int i = 0; i <jsonArray.length() ; i++) {
+            JSONObject jsonLibro=jsonArray.getJSONObject(i);
+            JSONObject jsonCategoria=jsonLibro.getJSONObject("categoria");
+            lista.add(new Libro(jsonLibro.getInt("id"),jsonLibro.getString("nombre"),jsonLibro.getString("autor"),jsonLibro.getString("editorial"),jsonCategoria.getInt("id")));
         }
 
-        String wEditorial="";
-        if (!editorial.trim().isEmpty()) {
-            wEditorial = "l.editorial LIKE :editorialLibro";
-            where = Sql.rellenaWhereOR(where, wEditorial);
-            //where = id = ? OR nombre LIKE ? OR apellidos LIKE ?
-        }
-
-        String wCategoria="";
-        if (categoria != 0) {
-            wCategoria = "l.categoria = :categoriaLibro";
-            where = Sql.rellenaWhereOR(where, wCategoria);
-        }
-
-        if (where.isEmpty())
-            return leerAllLibros();
-        else {
-            sql = sql + " WHERE "+where;
-            // sql = SELECT .... FROM usuario WHERE .......
-            //TypedQuery<Libro> typedQuery = em.createQuery(sql, Libro.class);
-
-            /*
-            if (!wId.isEmpty())
-                typedQuery.setParameter("idLibro", id);
-            if (!wNombre.isEmpty())
-                typedQuery.setParameter("nombreLibro", nombre);
-            if (!wAutor.isEmpty())
-                typedQuery.setParameter("autorLibro", autor);
-            if (!wEditorial.isEmpty())
-                typedQuery.setParameter("editorialLibro", editorial);
-            if (!wCategoria.isEmpty())
-                typedQuery.setParameter("categoriaLibro", categoria);
-
-            lista = typedQuery.getResultList();
-             */
-        }
-        LogFile.saveLOG(sql);
+        //LogFile.saveLOG(sql);
         return lista;
     }
 
