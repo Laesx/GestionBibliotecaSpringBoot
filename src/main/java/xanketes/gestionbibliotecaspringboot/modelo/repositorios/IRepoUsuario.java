@@ -9,9 +9,6 @@ import java.util.List;
 
 @Repository
 public interface IRepoUsuario extends CrudRepository<EntidadUsuario, Integer> {
-
-    EntidadCategoria findByCategoria(String nomCategoria);
-
-    List<EntidadUsuario> findByNombreOrApellidos(int id,String nombre, String apellidos);
+    List<EntidadUsuario> findByIdOrNombreOrApellidos(int id, String nombre, String apellidos);
 
 }

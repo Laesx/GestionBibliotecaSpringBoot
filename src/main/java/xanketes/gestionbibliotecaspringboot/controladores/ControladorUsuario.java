@@ -61,8 +61,8 @@ public class ControladorUsuario {
     }
 
     @GetMapping("/busquedaOr")
-    public List<EntidadUsuario> findByNombreOrApellidos(@RequestParam int id, @RequestParam String nombre, @RequestParam String apellidos){
-        return repoUsuario.findByNombreOrApellidos(id,nombre, apellidos);
+    public List<EntidadUsuario> findByIdOrNombreOrApellidos(@RequestParam int id, @RequestParam String nombre, @RequestParam String apellidos){
+        return repoUsuario.findByIdOrNombreOrApellidos(id, nombre, apellidos);
     }
 
 }

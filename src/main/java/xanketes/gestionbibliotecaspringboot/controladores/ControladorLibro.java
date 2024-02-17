@@ -70,14 +70,6 @@ public class ControladorLibro {
         }
     }
 
-    /*
-    @GetMapping("/busquedaOr")
-    public List<EntidadLibro> findByAutorOrNombreOrEditorialOrId(@RequestParam String autor, @RequestParam String nombre, @RequestParam String editorial, @RequestParam int id) {
-        return repoLibro.findByAutorOrNombreOrEditorialOrId(autor, nombre, editorial, id);
-    }
-
-     */
-
     @GetMapping("/busquedaOr")
     public List<EntidadLibro> findByIdOrNombreOrAutorOrEditorialOrCategoria(@RequestParam String autor, @RequestParam String nombre, @RequestParam String editorial, @RequestParam int id, @RequestParam EntidadCategoria categoria) {
         return repoLibro.findByIdOrNombreOrAutorOrEditorialOrCategoria(id, nombre, autor, editorial, categoria);
