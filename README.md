@@ -3,8 +3,8 @@
 
 ## Integrantes del Grupo 👥
 
-- 👨‍💻 Juan Manuel Sújar González
-- 👨‍💻 Sebastián Olea Castillo
+- 👨‍💻 Juan Manuel
+- 👨‍💻 Sebastián
 - 👨‍💻 Eric
 
 <br>
@@ -30,8 +30,7 @@ sin muchas alteraciones, asegurando así una arquitectura organizada y sobre tod
 
 **3. Patrón Observer.**
 
-La idea principal consiste en mantener el patron Observer como viene planteado de anteriores practicas, ya que lo que será devuelto por la parte del modelo se vera igual que si se usara un mòdelo JPA. <br>
-
+La idea principal consiste en mantener el patron Observer como viene planteado de anteriores practicas, ya que la declaracion del metodo se ha mantenido sin alteraciones desde la practica hibernate. <br>
 <br>
 
  ## Creación del Proyecto🛠️
@@ -57,6 +56,7 @@ Esta parte de la implementación se ha creado el paquete `controladores` que es 
 
 <br>
 
+
 ## Solicitudes HTTP :accessibility:
 Esta es una clase la cual simplemente esta compuesta por 4 metodos estaticos, mas concretamente los metodos CRUD clasicos (create, read, update & delete). 
 
@@ -81,11 +81,43 @@ Este método realiza una solicitud HTTP POST a la URL proporcionada, enviando un
 
 ## Implementación clases DAO ⚛️
 
+Aqui antes de empezar a programar para ser más pragmáticos decidimos dividir la parte front-end y back-end, la parte back-end tenemos lo habiamos comentado nuestra parte `modelo` (Entidades y repositorios) y `controlador`, en cambio en la parte front end conservar lo que habiamos implementado en la anterior practica, excepto los metodos DAO y las clases POJO de modelo.
+
+<br>
+
+### Parte Front-End
+
+#### Clases + Interfaz DAO
+
+Las interfaces se han mantenido, ya que la declaracion de los metodos son iguales
+
+Y para la implementacion en este apartado hemos partido del metodo borrar que se encontraba en el PDF del tema 6, y que a su vez indagando descubrimos que este usaba los metodos de la clase HTTPRequest. Sucesivamente fuimos haciendo que todos los metodos de nuestras clases DAO fuera haciendo uso de estos metodos para automatizar la devolucion de objetos JSON e ir posteriormente desgranandolos. <br>
+
+Comentar que para los metodos OR, hay una funcionalidad y es que Spring tiene unos metodos pre-definidos por ejemplo: `findByNombreOrAutorOrEditorial` y automaticamente va seleccionando que en el caso de libro sea por nombre o autor o ... lo que declaremos para no tener que hacerlo manualmente y dando el metodo directamente como resultado una lista del objeto segun sea.
+
+#### Observer
+
+Aqui directamente tampoco ha habido modificaciones ya que no era necesario. Ya que cuando una funcion termina de hacer su labor se activa el observer al igual que con la practica de hibernate para notificar y avisar.
+
+#### Pojos
+
+Aqui simplemente creamos un pojo por cada tabla de la base de datos y con atributo por campo de tabla, a parte con sus getters y sus setters y demas metodos autogenerados, toString y la novedad es que empleamos un metodo toJSONObject donde se usa el metodo put para ir añadiendo objetos de cada tabla. Luego estos seran usados en la implementacion.
+
+<br>
+
+### Parte Back-End
+
+Ya se ha especificado en los apartados anteriores a <b>Implementacion clases DAO</b>
+
+<br>
+
 ## Problemas Encontrados y Soluciones Aportadas 🚧
 
 · Configuración del end-point en la cabezera de las clases controlador, en el @RequestMapping para que funcionase bien tuvimos que añadirlo asi, para libro por ejemplo: <b> "/api-rest/libros" </b>  <br><br>
 · Interpretación por parte de Spring Boot a la hora de tomar los nombres de los elementos de la tabla, un problema de sintaxis con la anotacíon CamelPath, para solventarlo tuvimos que añadir la siguiente linea en el application.properties:  <br>
- <u> spring.jpa.hibernate.naming.physical-strategy=org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl </u>
+ <u> spring.jpa.hibernate.naming.physical-strategy=org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl </u><br><br>
+· Problemas a la hora de realizar el where OR en la interfaz, habia que filtrar previamente en el controlador de libro si la categoria existia o no para obtener el resultado deseado<br><br>
+· Problemas relacionados con el uso de los metodos getRequest y el tipo de objeto que estos devolvian...
 
 <br>
 
