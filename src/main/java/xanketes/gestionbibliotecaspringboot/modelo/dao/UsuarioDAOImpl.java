@@ -22,12 +22,14 @@ public class UsuarioDAOImpl implements UsuarioDAO, Subject {
     private static final String sqlUPDATE = "UPDATE usuario SET nombre = ?, apellidos = ? WHERE id = ?";
     private static final String sqlDELETE = "DELETE usuario WHERE id = ?";
 
+    private static final String URL = "http://localhost:8080/api-rest/usuarios";
+
     public UsuarioDAOImpl() {
     }
 
     @Override
     public boolean insertar(Usuario usuario) throws Exception {
-        boolean insertado = SolicitudesHTTP.postRequest("http://localhost:8080/api-rest/usuarios",usuario.toJSON());
+        boolean insertado = SolicitudesHTTP.postRequest(URL,usuario.toJSON());
 
         grabaEnLogIns(usuario, sqlINSERT);
         notifyObservers();
@@ -42,7 +44,7 @@ public class UsuarioDAOImpl implements UsuarioDAO, Subject {
 
     @Override
     public boolean modificar(Usuario usuario) throws Exception {
-        boolean modificado = SolicitudesHTTP.putRequest("http://localhost:8080/api-rest/usuarios/"+ usuario.getId(),usuario.toJSON());
+        boolean modificado = SolicitudesHTTP.putRequest(URL + "/" + usuario.getId(),usuario.toJSON());
 
         grabaEnLogUpd(usuario, sqlUPDATE);
         notifyObservers();
@@ -59,7 +61,7 @@ public class UsuarioDAOImpl implements UsuarioDAO, Subject {
 
     @Override
     public boolean borrar(int id) throws Exception {
-        boolean borrado = SolicitudesHTTP.deleteRequest("http://localhost:8080/api-rest/usuarios/"+id);
+        boolean borrado = SolicitudesHTTP.deleteRequest(URL + "/" + id);
         grabaEnLogDel(id, sqlDELETE);
         notifyObservers();
         return borrado;
@@ -73,7 +75,7 @@ public class UsuarioDAOImpl implements UsuarioDAO, Subject {
     @Override
     public List<Usuario> leerAllUsuarios() throws Exception {
         List<Usuario> usuarios = new ArrayList<>();
-        JSONArray jsonArray = SolicitudesHTTP.getRequest("http://localhost:8080/api-rest/usuarios");
+        JSONArray jsonArray = SolicitudesHTTP.getRequest(URL);
         for (int i = 0; i < jsonArray.length(); i++) {
             JSONObject jsonUsuario = jsonArray.getJSONObject(i);
             usuarios.add(new Usuario(jsonUsuario.getInt("id"), jsonUsuario.getString("nombre"), jsonUsuario.getString("apellidos")));
@@ -88,7 +90,6 @@ public class UsuarioDAOImpl implements UsuarioDAO, Subject {
         String sql = "SELECT u FROM Usuario u";
         String where = "";
         List<Usuario> lista = null;
-        //EntityManager em = HibernateUtilJPA.getEntityManager();
 
         String wId = "";
         if (id != 0) {
@@ -131,7 +132,7 @@ public class UsuarioDAOImpl implements UsuarioDAO, Subject {
 
     @Override
     public Usuario getUsuario(int id) throws Exception {
-        JSONObject jsonUsuario = SolicitudesHTTP.getRequestObject("http://localhost:8080/api-rest/usuarios/" + id);
+        JSONObject jsonUsuario = SolicitudesHTTP.getRequestObject(URL + "/" + id);
         return new Usuario(
                 jsonUsuario.getInt("id"),
                 jsonUsuario.getString("nombre"),
