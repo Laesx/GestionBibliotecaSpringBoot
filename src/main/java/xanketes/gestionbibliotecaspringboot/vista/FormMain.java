@@ -403,7 +403,7 @@ public class FormMain extends JFrame implements Observer, ActionListener, FocusL
             // Se hace aqui ya que tiene que ser antes de que se inicie la Ventana Principal
             FlatDarculaLaf.setup();
             main = new FormMain();
-            ImageIcon icono = new ImageIcon("biblioteca.png");
+            ImageIcon icono = new ImageIcon("imagenes/biblioteca.png");
             main.setIconImage(icono.getImage());
             main.loginPassword();
         }
