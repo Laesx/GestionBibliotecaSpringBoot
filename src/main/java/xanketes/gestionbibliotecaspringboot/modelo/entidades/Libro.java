@@ -1,11 +1,27 @@
 package xanketes.gestionbibliotecaspringboot.modelo.entidades;
 
-public class Libro {
+import org.json.JSONException;
+import org.json.JSONObject;
+import xanketes.gestionbibliotecaspringboot.modelo.Entidad;
+
+public class Libro extends Entidad {
     private int id;
     private String nombre;
     private String autor;
     private String editorial;
     private int categoria;
+
+    public Libro(int id, String nombre, String autor, String editorial, int categoria) {
+        this.id = id;
+        this.nombre = nombre;
+        this.autor = autor;
+        this.editorial = editorial;
+        this.categoria = categoria;
+    }
+
+    public Libro() {
+
+    }
 
     public int getId() {
         return id;
@@ -68,14 +84,35 @@ public class Libro {
     }
 
 
-
     public void setCategoria(int categoria) {
         this.categoria = categoria;
     }
 
     @Override
-    public String toString(){
-        return String.format("%d. %s %s",id,nombre,editorial);
+    public String toString() {
+        return "Libro{" +
+                "id=" + id +
+                ", nombre='" + nombre + '\'' +
+                ", autor='" + autor + '\'' +
+                ", editorial='" + editorial + '\'' +
+                ", categoria{" +
+                "id=" +id +
+                ", categoria=" + categoria + '\''+
+                '}';
+    }
+
+    public String toJSON() throws JSONException {
+        return toJSONObject().toString();
+    }
+
+    public JSONObject toJSONObject() throws JSONException {
+        return new JSONObject()
+                .put("id", id)
+                .put("nombre", nombre)
+                .put("autor", autor)
+                .put("editorial",editorial)
+                .put("categoria", new JSONObject().put("id",id)
+                );
     }
 }
 

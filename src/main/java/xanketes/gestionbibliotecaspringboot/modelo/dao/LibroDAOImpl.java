@@ -1,13 +1,17 @@
 package xanketes.gestionbibliotecaspringboot.modelo.dao;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import xanketes.gestionbibliotecaspringboot.excepciones.CampoVacioExcepcion;
 import xanketes.gestionbibliotecaspringboot.modelo.dao.helper.LogFile;
+import xanketes.gestionbibliotecaspringboot.modelo.dao.helper.SolicitudesHTTP;
 import xanketes.gestionbibliotecaspringboot.modelo.dao.helper.Sql;
 import xanketes.gestionbibliotecaspringboot.modelo.entidades.Libro;
 import xanketes.gestionbibliotecaspringboot.observer.Observer;
 import xanketes.gestionbibliotecaspringboot.observer.Subject;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,7 +29,7 @@ public class LibroDAOImpl implements LibroDAO, Subject {
 
     @Override
     public boolean insertar(Libro libro) throws Exception {
-        boolean insertado = false;
+        boolean insertado = SolicitudesHTTP.postRequest("http://localhost:8080/api-rest/libros",libro.toJSON());
 
         notifyObservers();
         grabaEnLogIns(libro,sqlINSERT);
@@ -42,8 +46,7 @@ public class LibroDAOImpl implements LibroDAO, Subject {
 
     @Override
     public boolean modificar(Libro libro) throws Exception {
-        boolean actualizado = false;
-
+        boolean actualizado = SolicitudesHTTP.putRequest("http://localhost:8080/api-rest/usuarios/"+libro.getId(),libro.toJSON());
 
         notifyObservers();
         grabaEnLogUpd(libro,sqlUPDATE);
@@ -63,43 +66,25 @@ public class LibroDAOImpl implements LibroDAO, Subject {
     }
     @Override
     public boolean borrar(int id) throws Exception {
-        boolean borrado = false;
-
-
+        boolean borrado = SolicitudesHTTP.deleteRequest("http://localhost:8080/api-rest/libros/"+id);
         grabaEnLogDel(id,sqlDELETE);
-        // Al final de la operación, notificamos a los observadores
         notifyObservers();
         return borrado;
     }
 
-    /**
-     * Este método estático devuelve todos los libros de la BD,
-     * este método tendremos en un futuro reimplmentarlo por rangos de x,
-     * para que el rendimiento no decaiga cuando la tabla crezca
-     * @return un arraylist con todos los libros de la BD
-     * @throws SQLException cualquier error asociado a la consulta sql
-     * @throws CampoVacioExcepcion en el caso que contenga una categoria con categoria a null
-     */
     @Override
     public List<Libro> leerAllLibros() throws Exception {
-        return null;
+        List<Libro> libros=new ArrayList<>();
+        JSONArray jsonArray= SolicitudesHTTP.getRequest("http://localhost:8080/api-rest/libros");
+        for (int i = 0; i <jsonArray.length() ; i++) {
+            JSONObject jsonLibro=jsonArray.getJSONObject(i);
+            JSONObject jsonCategoria=jsonLibro.getJSONObject("categoria");
+            libros.add(new Libro(jsonLibro.getInt("id"),jsonLibro.getString("nombre"),jsonLibro.getString("autor"),jsonLibro.getString("editorial"),jsonCategoria.getInt("id")));
+        }
+        LogFile.saveLOG("SELECT * FROM libros");
+        return libros;
     }
 
-    //TODO cambiar documentación a Hibernate
-    /**
-    * Este método estático devuelve todos los libros de la BD,
-    * que cumplan la condición según los parametros
-    * este método tendremos en un futuro reimplmentarlo por rangos de x,
-    * para que el rendimiento no decaiga cuando la tabla crezca
-    * @param id código de libro a buscar
-    * @param nombre búsqueda de libros con dicho título
-    * @param autor búsqueda de libros con dicho autor
-    * @param editorial búsqueda de libros con dicha editorial
-    * @param categoria búsqueda de libros con dicho de código de categoría
-    * @return un arraylist con todos los libros de la BD
-    * @throws SQLException cualquier error asociado a la consulta sql
-    * @throws CampoVacioExcepcion en el caso que contenga una categoria con categoria a null
-    * */
     @Override
     public List<Libro> leerLibrosOR(int id, String nombre, String autor, String editorial, int categoria) throws Exception {
         String sql="SELECT l FROM Libro l";
@@ -172,7 +157,8 @@ public class LibroDAOImpl implements LibroDAO, Subject {
      */
     @Override
     public Libro getLibro(int id) throws Exception {
-        return null;
+        JSONObject jsonLibro= SolicitudesHTTP.getRequest("http://localhost:8080/api-rest/usuarios/"+id).getJSONObject(0);
+        return new Libro(jsonLibro.getInt("id"),jsonLibro.getString("nombre"),jsonLibro.getString("autor"),jsonLibro.getString("editorial"),jsonLibro.getInt("categoria"));
     }
 
     private Observer observer;

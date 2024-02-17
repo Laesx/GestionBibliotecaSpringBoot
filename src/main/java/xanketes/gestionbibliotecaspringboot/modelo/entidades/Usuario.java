@@ -1,9 +1,22 @@
 package xanketes.gestionbibliotecaspringboot.modelo.entidades;
 
-public class Usuario {
+import org.json.JSONException;
+import org.json.JSONObject;
+import xanketes.gestionbibliotecaspringboot.modelo.Entidad;
+
+public class Usuario extends Entidad {
     private int id;
     private String nombre;
     private String apellidos;
+
+    public Usuario(int id, String nombre, String apellidos) {
+        this.id = id;
+        this.nombre = nombre;
+        this.apellidos = apellidos;
+    }
+
+    public Usuario() {
+    }
 
     public int getId() {
         return id;
@@ -49,5 +62,27 @@ public class Usuario {
         result = 31 * result + (nombre != null ? nombre.hashCode() : 0);
         result = 31 * result + (apellidos != null ? apellidos.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public String
+    toString() {
+        return "Usuario{" +
+                "id=" + id +
+                ", nombre='" + nombre + '\'' +
+                ", apellidos='" + apellidos + '\'' +
+                '}';
+    }
+
+    public String toJSON() throws JSONException {
+        return toJSONObject().toString();
+    }
+
+
+    public JSONObject toJSONObject() throws JSONException {
+        return new JSONObject()
+                .put("id", id)
+                .put("nombre", nombre)
+                .put("apellidos", apellidos);
     }
 }

@@ -146,7 +146,7 @@ public class FichaLibro extends JInternalFrame implements VistaLibro, ActionList
         cbCategoria.removeAllItems();
         if (categorias!=null){
             for (Categoria categoria:categorias) {
-                cbCategoria.addItem(categoria);
+                cbCategoria.addItem(categoria.getId());
             }
         }
     }

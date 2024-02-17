@@ -517,13 +517,6 @@ public class FormMain extends JFrame implements Observer, ActionListener, FocusL
         }
     }
 
-    public JTextArea devuelveMiJtextArea(JTextArea textArea) {
-        this.textArea=textArea;
-        return textArea;
-    }
-
-
-
 
     private void nuevoUsuario() {
         try {
