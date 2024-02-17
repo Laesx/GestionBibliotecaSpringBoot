@@ -41,7 +41,7 @@ public class CategoriaDAOImpl implements CategoriaDAO, Subject {
 
     @Override
     public boolean modificar(Categoria categoria) throws Exception {
-        boolean modificado = SolicitudesHTTP.putRequest("http://localhost:8080/api-rest/categorias" + categoria.getId(), categoria.toJSON());
+        boolean modificado = SolicitudesHTTP.putRequest("http://localhost:8080/api-rest/categorias",categoria.toJSON());
 
         grabaEnLogUpd(categoria, sqlUPDATE);
         notifyObservers();
