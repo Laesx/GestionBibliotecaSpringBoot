@@ -47,8 +47,6 @@ public class FormMain extends JFrame implements Observer, ActionListener, FocusL
     private static JTextArea textArea;
     private  ArrayList<String> listaComandos;
 
-
-
     private JMenu mArchivo;
 
     {
@@ -725,8 +723,7 @@ public class FormMain extends JFrame implements Observer, ActionListener, FocusL
                         "UMPALUMPAS:\n" +
                         "- Eric\n" +
                         "- Sebastián Olea Castillo\n" +
-                        "- Juan Manuel Sújar González\n" +
-                        "- José María La Torre Ávila",
+                        "- Juan Manuel Sújar González\n",
                 "Créditos", JOptionPane.INFORMATION_MESSAGE);
     }
 

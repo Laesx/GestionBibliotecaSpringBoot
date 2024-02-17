@@ -46,7 +46,7 @@ public class LibroDAOImpl implements LibroDAO, Subject {
 
     @Override
     public boolean modificar(Libro libro) throws Exception {
-        boolean actualizado = SolicitudesHTTP.putRequest("http://localhost:8080/api-rest/usuarios/"+libro.getId(),libro.toJSON());
+        boolean actualizado = SolicitudesHTTP.putRequest("http://localhost:8080/api-rest/libros",libro.toJSON());
 
         notifyObservers();
         grabaEnLogUpd(libro,sqlUPDATE);

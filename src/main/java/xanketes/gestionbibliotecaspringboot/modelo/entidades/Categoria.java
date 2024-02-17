@@ -2,11 +2,11 @@ package xanketes.gestionbibliotecaspringboot.modelo.entidades;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import xanketes.gestionbibliotecaspringboot.modelo.Entidad;
 
-public class Categoria {
+public class Categoria extends Entidad{
     private int id;
     private String categoria;
-
 
     public Categoria(int id, String categoria) {
         this.id = id;

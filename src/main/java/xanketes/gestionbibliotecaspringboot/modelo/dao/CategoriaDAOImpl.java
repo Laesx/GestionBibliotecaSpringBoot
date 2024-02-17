@@ -48,6 +48,11 @@ public class CategoriaDAOImpl implements CategoriaDAO, Subject {
         return modificado;
     }
 
+    public Categoria getCategoriaById(int id) throws Exception {
+     JSONObject jsonCategoria=SolicitudesHTTP.getRequestObject("http://localhost:8080/api-rest/categorias/"+id);
+     return new Categoria(jsonCategoria.getInt("id"),jsonCategoria.getString("categoria"));
+    }
+
 
     private void grabaEnLogUpd(Categoria categoria, String sql) throws Exception {
         sql = sql.replaceFirst("\\?", categoria.getCategoria());
@@ -103,7 +108,8 @@ public class CategoriaDAOImpl implements CategoriaDAO, Subject {
      */
     @Override
     public Categoria categoria(int id) throws Exception {
-        return null;
+        JSONObject jsonCategoria= SolicitudesHTTP.getRequestObject("http://localhost:8080/api-rest/categorias/"+id);
+        return new Categoria(jsonCategoria.getInt("id"), jsonCategoria.getString("categoria"));
     }
 
 
