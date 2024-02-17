@@ -5,6 +5,7 @@ import org.json.JSONObject;
 import xanketes.gestionbibliotecaspringboot.modelo.Entidad;
 
 public class Usuario extends Entidad {
+
     private int id;
     private String nombre;
     private String apellidos;
@@ -77,7 +78,6 @@ public class Usuario extends Entidad {
     public String toJSON() throws JSONException {
         return toJSONObject().toString();
     }
-
 
     public JSONObject toJSONObject() throws JSONException {
         return new JSONObject()

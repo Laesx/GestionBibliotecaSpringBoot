@@ -122,13 +122,14 @@ public class SolicitudesHTTP {
         return insertado;
     }
 
+    // TODO Revisar esta función un poco, porque da más errores de los que soluciona
     private static void postError(HttpURLConnection conn,String pUrl) throws Exception {
         Scanner scanner = new Scanner(conn.getErrorStream());
         String response = scanner.useDelimiter("\\Z").next();
         scanner.close();
         JSONObject jsonObject = new JSONObject(response);
         String linea1 = String.format("Fallo desde: %s", pUrl);
-        String linea2 = String.format("Error: %s (%d)\n%s",jsonObject.get("error"),
+        String linea2 = String.format("Error: %s (%s)\n%s",jsonObject.get("error"),
                 jsonObject.get("status"),jsonObject.get("message"));
         if (jsonObject.has("errors")) {
             JSONArray jsonArray = jsonObject.getJSONArray("errors");

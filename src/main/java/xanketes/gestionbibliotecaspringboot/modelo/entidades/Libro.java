@@ -2,6 +2,7 @@ package xanketes.gestionbibliotecaspringboot.modelo.entidades;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import xanketes.gestionbibliotecaspringboot.modelo.Entidad;
 import xanketes.gestionbibliotecaspringboot.modelo.dao.helper.Entidades;
 
@@ -108,7 +109,7 @@ public class Libro extends Entidad {
     public String toJSON() throws JSONException {
         return toJSONObject().toString();
     }
-
+  
     public JSONObject toJSONObject() throws JSONException {
         return new JSONObject()
                 .put("id", id)

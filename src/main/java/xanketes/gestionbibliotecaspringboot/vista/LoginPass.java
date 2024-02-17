@@ -1,5 +1,6 @@
 package xanketes.gestionbibliotecaspringboot.vista;
 
+import xanketes.gestionbibliotecaspringboot.helper.LogIn;
 import xanketes.gestionbibliotecaspringboot.singleton.Configuracion;
 import xanketes.gestionbibliotecaspringboot.vista.helper.SwgAuxiliar;
 
@@ -143,10 +144,13 @@ public class LoginPass extends JDialog implements ActionListener, WindowListener
         myConf.setUser(eUser.getText());
         try{
             myConf.setPassword(String.valueOf(ePass.getPassword()));
-            // Aqui inicializamos la conexión a la BD con HibernateJPA
-            // HibernateUtilJPA.getEntityManager();
+            // Aqui llamamos a la funcion que comprueba si el usuario y la contraseña son correctos
+            // Contra la api que hemos hecho con springboot
+            LogIn.logIn(eUser.getText(),String.valueOf(ePass.getPassword()));
+
             bSalir=true;
         } catch (Exception e) {
+            //e.printStackTrace();
             SwgAuxiliar.msgExcepcion(e);
         }
         return bSalir;

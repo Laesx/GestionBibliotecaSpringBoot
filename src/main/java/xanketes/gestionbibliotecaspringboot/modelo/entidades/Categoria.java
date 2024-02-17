@@ -64,12 +64,10 @@ public class Categoria extends Entidad{
         return toJSONObject().toString();
     }
 
-
     public JSONObject toJSONObject() throws JSONException {
         return new JSONObject()
                 .put("id", id)
                 .put("categoria", categoria);
     }
-
 
 }
