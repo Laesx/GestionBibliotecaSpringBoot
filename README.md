@@ -132,10 +132,10 @@ Ya se ha especificado en los apartados anteriores a <b>Implementación clases DA
 
 ## Problemas Encontrados y Soluciones Aportadas 🚧
 
-· Configuración del end-point en la cabecera de las clases controlador, en el @RequestMapping para que funcionase bien tuvimos que añadirlo asi, para libro por ejemplo: <b> "/api-rest/libros" </b>.
+· Configuración del end-point en la cabecera de las clases controlador, en el @RequestMapping para que funcionase bien tuvimos que añadirlo asi, para libro por ejemplo: <b> "/api-rest/libros" </b>. <br><br>
 · Interpretación por parte de Spring Boot a la hora de tomar los nombres de los elementos de la tabla, un problema de sintaxis con la anotación CamelPath, para solventarlo tuvimos que añadir la siguiente
 línea en el application.properties: <br>
-· <u>spring.jpa.hibernate.naming.physical-strategy=org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl </u><br><br>
+<u>spring.jpa.hibernate.naming.physical-strategy=org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl </u><br><br>
 · Problemas a la hora de realizar el whereOR en la interfaz, había que filtrar previamente en el controlador de libro si la categoría existía o no para obtener el resultado deseado<br><br>
 · Problemas relacionados con el uso de los métodos getRequest y el tipo de objeto que estos devolvían...
 
