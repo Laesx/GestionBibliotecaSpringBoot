@@ -7,7 +7,6 @@
 - 👨‍💻 Sebastián
 - 👨‍💻 Eric
 
-<br>
 
 ## Objetivo del Trabajo 🎯
 **1. Gestión de una base de datos, basada en una biblioteca usando SpringBoot.**
@@ -16,13 +15,12 @@ El objetivo de esta interesante práctica es aprovechar la facilidad y portabili
 para crear y manejar clases que están asociadas a tablas en una base de datos, todo ello en un 
 periodo de tiempo muy inferior a como resultaría utilizando un modelo JPA o SQL convencional.
 
-***Ventajas de usar Spring Boot:*** <br>
-    - Simplifica y acelera el desarrollo de aplicaciones Java. <br>
-    - Está diseñado para crear aplicaciones autónomas con una configuración mínima. <br> 
-    - Autoconfiguración: Proporciona autoconfiguración inteligente basada en las dependencias presentes en el proyecto. <br> 
-    - Desarrollo Rápido: Facilita la creación de aplicaciones con un rápido desarrollo y despliegue. <br>
-  
-<br><br>
+***Ventajas de usar Spring Boot:***
+    - Simplifica y acelera el desarrollo de aplicaciones Java.
+    - Está diseñado para crear aplicaciones autónomas con una configuración mínima.
+    - Autoconfiguración: Proporciona autoconfiguración inteligente basada en las dependencias presentes en el proyecto.
+    - Desarrollo Rápido: Facilita la creación de aplicaciones con un rápido desarrollo y despliegue.
+
 
 **2. Mantener el modelo MVC (modelo-vista-controlador).**
 
@@ -33,43 +31,63 @@ sin muchas alteraciones, asegurando así una arquitectura organizada y sobre tod
 **3. Patrón Observer.**
 
 La idea principal consiste en mantener el patron Observer como viene planteado de anteriores prácticas,
-ya que la declaración del método se ha mantenido sin alteraciones desde la práctica hibernate. <br>
-<br>
+ya que la declaración del método se ha mantenido sin alteraciones desde la práctica hibernate.
 
- ## Creación del Proyecto🛠️
+# Parte Back-End (Spring Boot)
 
- Iniciamos un proyecto usando IntelliJ, proyecto tipo Spring Initializr desde 0.
- Seleccionamos las dependencias para crear la API REST, luego añadimos las facetas JPA y Web, luego el run configuration y finalmente cargamos el contenedor Docker. <br>
+Para implementar este back-end, que será totalmente independiente del front-end (ya que es un micro servicio), hemos seguido los siguientes pasos:
 
-<br>
+ ## Creación del Proyecto 🛠️
 
- ## Configuración del patrón de diseño MVC e implementación de modelo 🔦
+ Creamos un nuevo proyecto usando IntelliJ, de tipo Spring Initializr.
+ Seleccionamos las dependencias de Spring que aparecen en la imagen que son las que nos van a hacer falta para poder hacer una API-REST, 
+ y finalmente añadimos las facetas JPA y Web a el proyecto de IntelliJ.
 
- Una vez configurado el proyecto inicial, creamos a mano el paquete `modelo`. 
- En este paquete contiene la información correspondiente a las entidades y los repositorios de las tablas. 
+![img_1.png](docs/dependencias.png)
+
+ ## Implementación del modelo 🔦
+
+ Una vez configurado el proyecto inicial, creamos el paquete `modelo`.
+ Este paquete contendrá las entidades y los repositorios de estas.
+ Los repositorios son interfaces que extienden de CrudRepository y que nos permiten hacer consultas a la base de datos de una forma muy sencilla.
+ Gracias al maravilloso Spring Boot.
+
  Todo ello agregando la faceta JPA sobre Hibernate y para acabar realizando el mapeo de las clases entidades o POJO de cuales empezaremos a partir.
 
- ### Mapeado de entidades
+## Mapeado de entidades 🗺️
 
- Aquí en la imagen podemos apreciar como se han finalmente mapeado las entidades de la base de datos. (insertar imagen)
- Teniendo en cuenta la consideración de que a ser posible en el caso de la tabla `prestamos` a la hora de unirla con la tabla libro y usuario para asi formar un préstamo,
- se referencien estas llaves foráneas en préstamo como un objeto o entidad y ahi mejorar la portabilidad de la clase y por ende la de la aplicación. <br>
+Para mapear las entidades, usamos la pestaña `Persistence` de IntelliJ, y seleccionamos la opción `Generate Persistance Mapping`, como hemos hecho otras veces.
 
-<br>
+Teniendo en cuenta la consideración de que a ser posible en el caso de la tabla `prestamos` a la hora de unirla con la tabla libro y usuario para así formar un préstamo,
+se referencien estas llaves foráneas en préstamo como un objeto o entidad y así mejorar la portabilidad de la clase y por ende la de la aplicación.
 
-## Implementación controlador 💅
+En la imagen podemos apreciar como se han mapeado las entidades de la base de datos.
 
-Esta parte de la implementación se ha creado el paquete `controladores` que es lo que viene a ser la parte que contiene las clases directamente relacionadas con las tablas y
-<b>controlaran</b> como su nombre indica, el flujo de datos que pasan desde la vista o interfaz hacia la base de datos, básicamente serán validados y manejados con anotaciones
-propias del framework como <b>@Validated</b> o <b>@PostRequest</b> para dirigir las consultas y asegurar la persistencia en nuestros objetos. <br>
+![img.png](docs/entidades.png)
 
-<br>
+## Implementación controlador 🎮
 
+En esta parte de la implementación se ha creado el paquete `controladores` que es quien contiene las clases directamente relacionadas con las tablas y
+<b>controlaran</b> como su nombre indica, el flujo de datos que recibimos a través de los endpoint hacia la base de datos, básicamente serán validados y manejados con anotaciones
+propias del framework como <b>@Validated</b> o <b>@PostRequest</b> para dirigir las consultas y asegurar la persistencia en nuestros objetos.
+
+## Empaquetado y Despliegue 📦
+
+Una vez que hemos implementado todas las clases y métodos necesarios, empaquetamos el proyecto con Maven a un jar.
+Para ello, en la pestaña de IntelliJ de Maven, ejecutamos el comando `Lifecycle -> Package` y se generará un jar en la carpeta target del proyecto.
+El cual podremos ejecutar con el comando `java -jar nombreDelJar.jar` y se desplegará en el puerto 8080 por defecto.
+
+# Parte Front-End
+Para el front-end, hemos decidido mantener la estructura de la práctica anterior, ya que el objetivo de esta práctica es 
+centrarnos en el back-end y no en el front-end.
+
+Por lo tanto, hemos mantenido las interfaces de las clases DAO, Observer y POJOS (Aunque ahora sin estar conectados a JPA, son POJOS simples), 
+y hemos añadido la clase de solicitudes HTTP, además de modificar todas las implementaciones de cada Clase DAO.
 
 ## Solicitudes HTTP
-Esta es una clase la cual simplemente está compuesta por 4 métodos estáticos, más concretamente los métodos CRUD clásicos (Create, Read, Update & Delete). 
-
-A continuación una breve explicación de la función para cada clase: <br>
+Esta es la clase que implementa toda la comunicación con Spring Boot a traves de la API-REST que hemos creado. 
+Está compuesta por 4 métodos estáticos, más concretamente los métodos CRUD clásicos (Create, Read, Update & Delete).
+A continuación una breve explicación de la función para cada clase:
 
 #### deleteRequest(String pUrl) ↩️
 Este método realiza una solicitud HTTP DELETE a la URL proporcionada. Si la respuesta del servidor es 200 (éxito), devuelve true.
@@ -89,57 +107,95 @@ Si no, lanza una excepción con un mensaje de error.
 
 #### postRequest(String pUrl, String json) ⬆️
 Este método realiza una solicitud HTTP POST a la URL proporcionada, enviando un objeto JSON como cuerpo de la solicitud. Si la respuesta del servidor es 200 (éxito),
-devuelve true. Si no, lanza una excepción con un mensaje de error. 
+devuelve true. Si no, lanza una excepción con un mensaje de error.
 
-<br><br>
 
 ## Implementación clases DAO ⚛️
 
-Aquí antes de empezar a programar para ser más pragmáticos decidimos dividir la parte front-end y back-end, la parte back-end tenemos lo habíamos comentado nuestra
-parte `modelo` (Entidades y repositorios) y `controlador`, en cambío en la parte front end conservar lo que habíamos implementado en la anterior práctica, excepto 
-los métodos DAO y las clases POJO de modelo.
+Las interfaces se han mantenido, ya que la declaración de los métodos son iguales, lo hicimos de esta manera, para que no hubiera que hacer cambios en la vista de la aplicación. 
+Ya que lo que devuelven los metodos es lo mismo.
 
-<br>
+Y para la implementación en este apartado hemos hecho uso de las clases de solicitudes HTTP que hemos implementado en la parte front-end.
+Cada sentencia llama a un método de la clase de solicitudes HTTP y devuelve el resultado de la consulta.
 
-### Parte Front-End
+Por ejemplo, en el método `leerAllPrestamos`:
 
-#### Clases + Interfaz DAO
+```java 
+@Override
+public List<Prestamo> leerAllPrestamos() throws Exception {
+        List<Prestamo> prestamos= new ArrayList<>();
+        JSONArray jsonArray = SolicitudesHTTP.getRequest(URL.PRESTAMOS);
 
-Las interfaces se han mantenido, ya que la declaración de los métodos son iguales
+        for (int i = 0; i < jsonArray.length(); i++) {
+        JSONObject jsonObject = jsonArray.getJSONObject(i);
 
-Y para la implementación en este apartado hemos partido del método borrar que se encontraba en el PDF del tema 6, y que a su vez indagando descubrimos que este usaba los métodos de la clase HTTPRequest.
-Sucesivamente fuimos haciendo que todos los métodos de nuestras clases DAO fuera haciendo uso de estos métodos para automatizar la devolución de objetos JSON e ir posteriormente desgranándolos. <br>
+        JSONObject jsonLibro = jsonObject.getJSONObject("libro");
+        JSONObject jsonUsuario = jsonObject.getJSONObject("usuario");
 
-Cabe comentar que para los métodos OR, hay una funcionalidad y es que Spring tiene unos métodos pre-definidos por ejemplo: `findByNombreOrAutorOrEditorial` y automáticamente va seleccionando que en el
-caso de libro sea por nombre o autor o ... lo que declaremos para no tener que hacerlo manualmente y dando el método directamente como resultado una lista del objeto según sea.
+        prestamos.add(new Prestamo(jsonObject.getInt("idPrestamo"),
+        jsonLibro.getInt("id"),
+        jsonUsuario.getInt("id"),
+        LocalDateTime.parse(jsonObject.getString("fechaPrestamo"), DateTimeFormatter.ISO_OFFSET_DATE_TIME)));
+        }
 
-#### Observer
+        return prestamos;
+        }
+```
 
-Aquí directamente tampoco ha habido modificaciones. Ya que cuando una función termina de hacer su labor se activa el observer al igual que con la práctica de hibernate para notificar y avisar.
+Podemos ver como se hace uso de la clase de solicitudes HTTP para obtener un JSONArray con todos los préstamos, 
+le enviamos la URL que tenemos guardada de forma estatica en un fichero de configuración de los endpoint y 
+posteriormente se recorre el JSONArray para obtener los objetos JSON y desgranarlos en objetos de tipo Prestamo.
+Los cuales metemos en una lista y devolvemos.
 
-#### Pojos
+Sucesivamente fuimos haciendo que todos los métodos de nuestras clases DAO fuera haciendo uso de estos métodos para automatizar la devolución de objetos JSON e ir posteriormente desgranándolos.
 
-Para ello, simplemente creamos un pojo por cada tabla de la base de datos con sus atributos por cada campo de la tabla y demás métodos autogenerados, toString y la novedad es que empleamos un método
-toJSONObject donde se usa el método put para ir añadiendo objetos de cada tabla. Luego estos serán usados en la implementación.
+Cabe comentar que para los métodos OR, hay una funcionalidad y es que en Spring podemos hacer uso de métodos OR por ejemplo: `findByNombreOrAutorOrEditorial` y automáticamente va seleccionando que en el
+caso de libro sea por nombre o autor o ... lo que declaremos para no tener que hacerlo manualmente y dando el método directamente como resultado una lista del objeto según los haya encontrado.
 
-<br>
+### Clase URL
 
-### Parte Back-End
+En esta clase simplemente hemos declarado las URL de los endpoint que vamos a usar en la aplicación, para no tener que estar escribiendo la URL en cada método de las clases DAO.
+Y si en un futuro cambia la URL, solo tendremos que cambiarla en un único lugar.
 
-Ya se ha especificado en los apartados anteriores a <b>Implementación clases DAO</b>
+```java
+public class URL {
+    public static final String BASE_URL = "http://localhost:8080";
+    public static final String ENDPOINT = "/api-rest";
+    public static final String LIBROS = BASE_URL + ENDPOINT + "/libros";
+    public static final String CATEGORIAS = BASE_URL + ENDPOINT + "/categorias";
+    public static final String USUARIOS = BASE_URL + ENDPOINT + "/usuarios";
+    public static final String PRESTAMOS = BASE_URL + ENDPOINT + "/prestamos";
+    public static final String HISTORICO = BASE_URL + ENDPOINT + "/historico";
+    public static final String LOGIN = BASE_URL + "/login";
 
-<br>
+    public static String user = "Grupo Umpa Lumpa";
+}
+```
+
+### Observer
+
+Aquí directamente tampoco ha habido modificaciones. 
+Ya que cuando una función termina de hacer su labor se activa el observer al igual que con la práctica de hibernate para notificar y avisar.
+
+### POJOS
+
+Para ello, simplemente usamos los mismos POJOS que teníamos en la práctica de hibernate, pero eliminando las anotaciones de JPA, ya que no las necesitamos. 
+Por lo que se vuelven POJOS simples. 
+La única modificación que hemos hecho es que hemos sobrescrito el método
+toString y la novedad es que hemos creado 2 nuevos métodos, uno llamado
+`toJSONObject` donde se usa el método put para formar un `JSONObject` de cada tabla y otro llamado 
+`toJSON` que devuelve el JSON del objeto como un string, que luego usaremos en la implementación.
 
 ## Problemas Encontrados y Soluciones Aportadas 🚧
 
-· Configuración del end-point en la cabecera de las clases controlador, en el @RequestMapping para que funcionase bien tuvimos que añadirlo asi, para libro por ejemplo: <b> "/api-rest/libros" </b>. <br><br>
-· Interpretación por parte de Spring Boot a la hora de tomar los nombres de los elementos de la tabla, un problema de sintaxis con la anotación CamelPath, para solventarlo tuvimos que añadir la siguiente
-línea en el application.properties: <br>
-<u>spring.jpa.hibernate.naming.physical-strategy=org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl </u><br><br>
-· Problemas a la hora de realizar el whereOR en la interfaz, había que filtrar previamente en el controlador de libro si la categoría existía o no para obtener el resultado deseado<br><br>
-· Problemas relacionados con el uso de los métodos getRequest y el tipo de objeto que estos devolvían...
+- Configuración del end-point en la cabecera de las clases controlador, en el @RequestMapping para que funcionase bien tuvimos que añadirlo asi, para libro por ejemplo: <b> "/api-rest/libros" </b>.
+- Interpretación por parte de Spring Boot a la hora de tomar los nombres de los elementos de la tabla, un problema de sintaxis con la anotación CamelPath, para solventarlo tuvimos que añadir la siguiente
+línea en el application.properties:
+<u>spring.jpa.hibernate.naming.physical-strategy=org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl </u>
+- Problemas a la hora de realizar el whereOR en la interfaz, había que filtrar previamente en el controlador de libro si la categoría existía o no para obtener el resultado deseado, ya que intentaba buscar
+una categoría que no existía y por ende no devolvía nada.
+- Problemas relacionados con el uso de los métodos getRequest y el tipo de objeto que estos devolvían...
 
-<br>
 
 ## Recursos Utilizados 🏗️
  · PDF's de Antonio
