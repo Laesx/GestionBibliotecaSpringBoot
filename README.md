@@ -15,7 +15,7 @@ El objetivo de esta interesante práctica es aprovechar la facilidad y portabili
 para crear y manejar clases que están asociadas a tablas en una base de datos, todo ello en un 
 periodo de tiempo muy inferior a como resultaría utilizando un modelo JPA o SQL convencional.
 
-***Ventajas de usar Spring Boot:***
+***Ventajas de usar Spring Boot:*** <br>
     - Simplifica y acelera el desarrollo de aplicaciones Java. <br>
     - Está diseñado para crear aplicaciones autónomas con una configuración mínima. <br>
     - Autoconfiguración: Proporciona autoconfiguración inteligente basada en las dependencias presentes en el proyecto. <br>
