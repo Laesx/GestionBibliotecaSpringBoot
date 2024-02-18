@@ -71,6 +71,12 @@ En esta parte de la implementación se ha creado el paquete `controladores` que 
 <b>controlaran</b> como su nombre indica, el flujo de datos que recibimos a través de los endpoint hacia la base de datos, básicamente serán validados y manejados con anotaciones
 propias del framework como <b>@Validated</b> o <b>@PostRequest</b> para dirigir las consultas y asegurar la persistencia en nuestros objetos.
 
+## Postman 📝
+
+Es una herramienta muy util ya que te permite comprobar directamente los controladores de una tabla de forma muy intuitiva, sirviendo así de mucha ayuda para ahorrar tiempo y probar en nuestro caso las tablas de la Biblioteca a parte sin necesidad de añadir anotaciones en el código.
+
+Aqui antes de proseguir con el desarrollo del proyecto y pasar a la parte del front-end, probamos todos los controladores para asegurarnos que la base de la que ibamos a partir estuviera bien verificada y fuera robusta contra errores. Primero abrimos una tarea para crear un grupo en el Postman, ya que nos parecía una herramienta de la aplicación muy útil para que todos pudieramos verificar lo de todos a la misma vez e ir guardando las pruebas. Asi evitamos que uno por uno hiciera lo mismo en cuanto a creación de pruebas y fuera el mismo grupo y pruebas para todos en conjunto. Luego de ello ya con el grupo creado y con todas las request de todas las tablas pues como se ha dicho, cada uno probó lo de todos y corrigiendo errores en caso necesario.
+
 ## Empaquetado y Despliegue 📦
 
 Una vez que hemos implementado todas las clases y métodos necesarios, empaquetamos el proyecto con Maven a un jar.
