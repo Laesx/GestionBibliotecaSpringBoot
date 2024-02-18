@@ -7,9 +7,7 @@ import java.sql.SQLException;
 
 /**
  * Esta será la intefaz para manejar los tabla de log 
- * Historico de la BD BIBLIOTECA
- * @author AGE
- * @version 2
+ * Histórico de la BD BIBLIOTECA
  */
 public interface HistoricoDAO {
 
@@ -18,17 +16,7 @@ public interface HistoricoDAO {
      * insertar un registro asociado a la tabla historico para algún
      * sistema gestor de BD o de ficheros
      * @return verdad en el caso de que la inserción ser realice con éxito
-     * @throws SQLException
-     * @throws IOException
+     * @throws Exception cualquier error asociado a la consulta http, grabar en fichero...
      */
-    boolean insertar(Historico historico) throws Exception;
-
-    /**
-     * Implementaremos las instrucciones necesarias para poder
-     * modificar un registro asociado a la tabla historico para algún
-     * sistema gestor de BD o de ficheros
-     * @return verdad en el caso de que la modificación concluya éxito
-     * @throws SQLException
-     * @throws IOException
-     */
+    boolean insertar() throws Exception;
 }

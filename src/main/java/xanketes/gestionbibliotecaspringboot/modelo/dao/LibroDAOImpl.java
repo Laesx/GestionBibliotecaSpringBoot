@@ -64,7 +64,6 @@ public class LibroDAOImpl implements LibroDAO, Subject {
             JSONObject jsonCategoria=jsonLibro.getJSONObject("categoria");
             libros.add(new Libro(jsonLibro.getInt("id"),jsonLibro.getString("nombre"),jsonLibro.getString("autor"),jsonLibro.getString("editorial"),jsonCategoria.getInt("id")));
         }
-        LogFile.saveLOG("SELECT * FROM libros");
         return libros;
     }
 

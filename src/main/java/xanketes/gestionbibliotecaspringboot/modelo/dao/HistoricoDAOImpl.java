@@ -7,16 +7,34 @@ import xanketes.gestionbibliotecaspringboot.observer.Subject;
 
 public class HistoricoDAOImpl implements HistoricoDAO, Subject {
 
+    private Historico historico;
+
+    public HistoricoDAOImpl(Historico historico) {
+        this.historico = historico;
+    }
+
     /** Este método inserta un historico en la BD, a través de Springboot
-     * @param historico objeto historico a insertar
      * @return true si se ha insertado, false en caso contrario
      * @throws Exception cualquier error asociado a la consulta http, grabar en fichero...
      */
     @Override
-    public boolean insertar(Historico historico) throws Exception {
+    public boolean insertar() throws Exception {
         boolean insertado = SolicitudesHTTP.postRequest(URL.HISTORICO, historico.toJSON());
         notifyObservers();
        return insertado;
+    }
+
+    /**
+     * Este metodo inserta aquellos mensajes que son enviados al fichero LOG
+     * pero que serán almacenados en la tabla Historico
+     * @param msgLog mensaje enviado para añadir a la tabla Historico
+     * @throws Exception cualquier error asociado a la consulta http, grabar en fichero...
+     */
+    public static void mensaje(String msgLog) throws Exception {
+        Historico historico=new Historico();
+        historico.setUser(URL.user);
+        historico.setInfo(msgLog);
+        new HistoricoDAOImpl(historico).insertar();
     }
 
     private Observer observer;
@@ -38,5 +56,4 @@ public class HistoricoDAOImpl implements HistoricoDAO, Subject {
             observer.update(this);
         }
     }
-
 }

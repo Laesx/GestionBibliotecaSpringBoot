@@ -2,9 +2,7 @@ package xanketes.gestionbibliotecaspringboot.modelo.dao;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import xanketes.gestionbibliotecaspringboot.modelo.dao.helper.LogFile;
 import xanketes.gestionbibliotecaspringboot.modelo.dao.helper.SolicitudesHTTP;
-import xanketes.gestionbibliotecaspringboot.modelo.dao.helper.Sql;
 import xanketes.gestionbibliotecaspringboot.modelo.entidades.Usuario;
 import xanketes.gestionbibliotecaspringboot.observer.Observer;
 import xanketes.gestionbibliotecaspringboot.observer.Subject;

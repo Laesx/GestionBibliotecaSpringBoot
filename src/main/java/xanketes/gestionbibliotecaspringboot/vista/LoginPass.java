@@ -1,6 +1,6 @@
 package xanketes.gestionbibliotecaspringboot.vista;
 
-import xanketes.gestionbibliotecaspringboot.helper.LogIn;
+import xanketes.gestionbibliotecaspringboot.modelo.dao.helper.LogIn;
 import xanketes.gestionbibliotecaspringboot.modelo.dao.URL;
 import xanketes.gestionbibliotecaspringboot.vista.helper.SwgAuxiliar;
 
@@ -144,7 +144,7 @@ public class LoginPass extends JDialog implements ActionListener, WindowListener
 
             bSalir=true;
         } catch (Exception e) {
-            //e.printStackTrace();
+            e.printStackTrace();
             SwgAuxiliar.msgExcepcion(e);
         }
         return bSalir;

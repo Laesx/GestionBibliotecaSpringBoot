@@ -8,9 +8,18 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Scanner;
 
+import static xanketes.gestionbibliotecaspringboot.modelo.dao.helper.LogFile.saveLOG;
+import static xanketes.gestionbibliotecaspringboot.modelo.dao.helper.LogFile.saveLOGsinBD;
+
 public class SolicitudesHTTP {
     private SolicitudesHTTP() {
     }
+
+    /** Este método realiza una petición DELETE a la url que se le pasa como parámetro
+     * @param pUrl url a la que se va a realizar la petición
+     * @return true si se ha borrado correctamente
+     * @throws Exception cualquier error asociado a la consulta http...
+     */
     public static boolean deleteRequest(String pUrl) throws Exception {
         boolean borrado = false;
         HttpURLConnection conn = null;
@@ -25,9 +34,16 @@ public class SolicitudesHTTP {
             if (conn != null)
                 conn.disconnect();
         }
+        saveLOG("DELETE: " + pUrl);
         return borrado;
     }
 
+    /** Este método realiza una petición PUT a la url que se le pasa como parámetro
+     * @param pUrl url a la que se va a realizar la petición
+     * @param json json que se va a enviar
+     * @return true si se ha actualizado correctamente
+     * @throws Exception cualquier error asociado a la consulta http...
+     */
     public static boolean putRequest(String pUrl,String json) throws Exception {
         boolean actualizado = false;
         HttpURLConnection conn = null;
@@ -49,10 +65,16 @@ public class SolicitudesHTTP {
             if (conn != null )
                 conn.disconnect();
         }
+        saveLOG("PUT: " + pUrl + " " + json);
         return actualizado;
     }
 
 
+    /** Este método realiza una petición GET a la url que se le pasa como parámetro
+     * @param pUrl url a la que se va a realizar la petición
+     * @return JSONArray con la respuesta
+     * @throws Exception cualquier error asociado a la consulta http...
+     */
     public static JSONArray getRequest(String pUrl) throws Exception {
         JSONArray jsonArray=null;
         HttpURLConnection conn
@@ -74,9 +96,15 @@ public class SolicitudesHTTP {
             if (conn != null )
                 conn.disconnect();
         }
+        saveLOG("GET: " + pUrl);
         return jsonArray;
     }
 
+    /** Este método realiza una petición GET a la url que se le pasa como parámetro
+     * @param pUrl url a la que se va a realizar la petición
+     * @return JSONObject con la respuesta
+     * @throws Exception cualquier error asociado a la consulta http...
+     */
     public static JSONObject getRequestObject(String pUrl) throws Exception {
         JSONObject jsonObject=null;
         HttpURLConnection conn = null;
@@ -94,10 +122,17 @@ public class SolicitudesHTTP {
             if (conn != null )
                 conn.disconnect();
         }
+        saveLOG("GET: " + pUrl);
         return jsonObject;
     }
 
 
+    /** Este método realiza una petición POST a la url que se le pasa como parámetro
+     * @param pUrl url a la que se va a realizar la petición
+     * @param json json que se va a enviar
+     * @return true si se ha insertado correctamente
+     * @throws Exception cualquier error asociado a la consulta http...
+     */
     public static boolean postRequest(String pUrl,String json) throws Exception {
         boolean insertado=false;
         HttpURLConnection conn = null;
@@ -119,10 +154,19 @@ public class SolicitudesHTTP {
             if (conn != null )
                 conn.disconnect();
         }
+        // Comprobamos si la url es la de historico, para no guardar el log en la base de datos
+        // (ya que si no empieza un bucle infinito)
+        if (!pUrl.equals(xanketes.gestionbibliotecaspringboot.modelo.dao.URL.HISTORICO))
+            saveLOG("POST: " + pUrl + " " + json);
         return insertado;
     }
 
-    //TODO Revisar esta función un poco, porque da más errores de los que soluciona
+
+    /** Este método devuelve el error que se ha producido en la petición
+     * @param conn conexión
+     * @param pUrl url
+     * @throws Exception cualquier error asociado a la consulta http...
+     */
     private static void postError(HttpURLConnection conn,String pUrl) throws Exception {
         Scanner scanner = new Scanner(conn.getErrorStream());
         String response = scanner.useDelimiter("\\Z").next();

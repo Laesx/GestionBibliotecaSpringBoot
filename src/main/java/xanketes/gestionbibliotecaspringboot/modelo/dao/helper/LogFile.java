@@ -1,5 +1,7 @@
 package xanketes.gestionbibliotecaspringboot.modelo.dao.helper;
 
+import xanketes.gestionbibliotecaspringboot.modelo.dao.HistoricoDAO;
+import xanketes.gestionbibliotecaspringboot.modelo.dao.HistoricoDAOImpl;
 import xanketes.gestionbibliotecaspringboot.vista.FormMain;
 
 import java.io.IOException;
@@ -31,7 +33,7 @@ public class LogFile {
      */
     public static void saveLOG(String msgLog) throws Exception {
         saveLOGsinBD(msgLog);
-        //HistoricoDAOImpl.mensaje(msgLog);
+        HistoricoDAOImpl.mensaje(msgLog);
     }
 
     public static  ArrayList<String> getListaComandosLogs() {

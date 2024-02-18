@@ -2,19 +2,17 @@ package xanketes.gestionbibliotecaspringboot.modelo.entidades;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import xanketes.gestionbibliotecaspringboot.modelo.dao.helper.Entidades;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 public class Historico {
     private int idHistorico;
     private String user;
-    private Timestamp fecha;
+    private LocalDateTime fecha = LocalDateTime.now();
     private String info;
 
-    public Historico(int idHistorico, String user, Timestamp fecha, String info) {
+    public Historico(int idHistorico, String user, LocalDateTime fecha, String info) {
         this.idHistorico = idHistorico;
         this.user = user;
         this.fecha = fecha;
@@ -40,11 +38,11 @@ public class Historico {
         this.user = user;
     }
 
-    public Timestamp getFecha() {
+    public LocalDateTime getFecha() {
         return fecha;
     }
 
-    public void setFecha(Timestamp fecha) {
+    public void setFecha(LocalDateTime fecha) {
         this.fecha = fecha;
     }
 
@@ -97,7 +95,7 @@ public class Historico {
     public JSONObject toJSONObject() throws JSONException {
         return new JSONObject()
                 .put("id", idHistorico)
-                .put("user", user )
+                .put("user", user)
                 .put("fecha", fecha.toString())
                 .put("info", info);
     }
